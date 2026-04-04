@@ -44,11 +44,11 @@
       <h2>核心指標</h2>
       <div class="kpi">
         <div class="k">入場筆數<div class="n">50</div></div>
-        <div class="k">來店總人數<div class="n">150</div></div>
+        <div class="k">來店總人數<div class="n" id="totalPeople">--</div></div>
         <div class="k">孩童總數<div class="n">92</div></div>
         
       </div>
-      <div class="muted" style="margin-top:8px">※ 統計設定：來店總人數固定採你指定口徑（150）</div>
+      <div class="muted" style="margin-top:8px" id="totalPeopleNote">※ 來店總人數由後台同步資料自動更新</div>
     </div>
 
     <div class="card">
@@ -95,5 +95,27 @@
       <div class="peak-note">尖峰時段：10:00（11 人）｜次高：11:00 / 14:00 / 15:00（各 9 人）</div>
     </div>
   </div>
+
+  <script>
+    (async function(){
+      try{
+        const res = await fetch('./today-data.json?t=' + Date.now(), { cache: 'no-store' });
+        if(!res.ok) throw new Error('no data');
+        const data = await res.json();
+        const total = Number(data.totalPeople);
+        if(Number.isFinite(total)){
+          document.getElementById('totalPeople').textContent = String(total);
+          if(data.updatedAt){
+            document.getElementById('totalPeopleNote').textContent = `※ 後台同步更新：${data.updatedAt}`;
+          }
+          return;
+        }
+        throw new Error('invalid totalPeople');
+      }catch(e){
+        document.getElementById('totalPeople').textContent = '150';
+        document.getElementById('totalPeopleNote').textContent = '※ 後台同步資料暫時不可用，先顯示備援值';
+      }
+    })();
+  </script>
 </body>
 </html>
