@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>FLAP Mobile 客人資料後台</title>
+  <style>
+    :root{--bg:#fff7fb;--card:#fff;--text:#2f2a2f;--line:#f1d9e9;--pink:#f472b6}
+    *{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--text);font-family:"Noto Sans TC","PingFang TC",-apple-system,sans-serif}
+    .wrap{max-width:760px;margin:0 auto;padding:12px}.card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px;margin:10px 0}
+    h1{margin:0 0 8px;font-size:20px}.muted{font-size:12px;color:#7b7280}
+    .field{margin:8px 0}.field label{display:block;font-size:13px;margin-bottom:4px}.field input{width:100%;padding:10px;border:1px solid #e8d4e3;border-radius:10px;font-size:14px}
+    .row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+    .btn{border:0;background:linear-gradient(180deg,#f891c7,#f472b6);color:#fff;padding:10px 12px;border-radius:10px;font-weight:700;cursor:pointer}
+    .btn.ghost{background:#fff;color:#444;border:1px solid #ddd}
+    table{width:100%;border-collapse:collapse;font-size:13px} th,td{padding:8px;border-bottom:1px solid #f3e3ee;text-align:left;vertical-align:top}
+    .status{font-weight:700}.s-on{color:#16a34a}.s-off{color:#6b7280}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card" id="guard" style="display:none">未登入，請先到 <a href="./index.html">Dashboard</a> 輸入 PIN。</div>
+
+    <div id="panel" style="display:none">
+      <div class="card">
+        <h1>客人資料後台</h1>
+        <div class="muted">可手動新增、結束入場、刪除（資料儲存在此瀏覽器 localStorage）</div>
+      </div>
+
+      <div class="card">
+        <div class="row">
+          <div class="field"><label>家長姓名</label><input id="parentName" /></div>
+          <div class="field"><label>孩童姓名（可多位，逗號分隔）</label><input id="childNames" /></div>
+        </div>
+        <div class="row">
+          <div class="field"><label>電話</label><input id="phone" /></div>
+          <div class="field"><label>入場時間（預設現在）</label><input id="checkin" type="datetime-local" /></div>
+        </div>
+        <button class="btn" onclick="addGuest()">新增入場</button>
+        <button class="btn ghost" onclick="seedDemo()">加入測試資料</button>
+      </div>
+
+      <div class="card">
+        <table>
+          <thead><tr><th>#</th><th>家長</th><th>孩童</th><th>電話</th><th>入場</th><th>離場</th><th>狀態</th><th>操作</th></tr></thead>
+          <tbody id="rows"></tbody>
+        </table>
+      </div>
+
+      <div class="card" style="display:flex;gap:8px;flex-wrap:wrap">
+        <a class="btn ghost" href="./index.html">回 Dashboard</a>
+        <button class="btn ghost" onclick="exportJson()">匯出 JSON</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const OK_KEY='flap_mobile_admin_ok';
+    const GUEST_KEY='flap_mobile_guest_records_v1';
+
+    function uid(){return Date.now()+Math.random().toString(36).slice(2,8)}
+    function nowLocalInput(){
+      const d=new Date();
+      const p=n=>String(n).padStart(2,'0');
+      return `${d.getFullYear()}-${p(d.getMonth()+1)}-${p(d.getDate())}T${p(d.getHours())}:${p(d.getMinutes())}`;
+    }
+    function fmt(v){if(!v) return '—'; const d=new Date(v); return isNaN(d)?v:d.toLocaleString();}
+    function getRows(){try{return JSON.parse(localStorage.getItem(GUEST_KEY)||'[]')}catch{return []}}
+    function setRows(v){localStorage.setItem(GUEST_KEY,JSON.stringify(v))}
+
+    function render(){
+      const rows=getRows().sort((a,b)=>new Date(b.checkinTime)-new Date(a.checkinTime));
+      document.getElementById('rows').innerHTML=rows.map((r,i)=>`<tr>
+        <td>${rows.length-i}</td>
+        <td>${r.parentName||''}</td>
+        <td>${r.childNames||''}</td>
+        <td>${r.phone||''}</td>
+        <td>${fmt(r.checkinTime)}</td>
+        <td>${fmt(r.checkoutTime)}</td>
+        <td><span class='status ${r.checkoutTime?'s-off':'s-on'}'>${r.checkoutTime?'已離場':'進行中'}</span></td>
+        <td>
+          ${r.checkoutTime?'':`<button class='btn ghost' onclick="checkout('${r.id}')">結束</button>`}
+          <button class='btn ghost' onclick="removeRow('${r.id}')">刪除</button>
+        </td>
+      </tr>`).join('') || `<tr><td colspan='8' class='muted'>尚無資料</td></tr>`;
+    }
+
+    function addGuest(){
+      const parentName=document.getElementById('parentName').value.trim();
+      const childNames=document.getElementById('childNames').value.trim();
+      const phone=document.getElementById('phone').value.trim();
+      const checkin=document.getElementById('checkin').value;
+      if(!parentName||!childNames) return alert('請至少填家長姓名與孩童姓名');
+      const rows=getRows();
+      rows.push({id:uid(),parentName,childNames,phone,checkinTime:checkin?new Date(checkin).toISOString():new Date().toISOString(),checkoutTime:null});
+      setRows(rows); render();
+      document.getElementById('parentName').value='';
+      document.getElementById('childNames').value='';
+      document.getElementById('phone').value='';
+      document.getElementById('checkin').value=nowLocalInput();
+    }
+
+    function checkout(id){
+      const rows=getRows();
+      const r=rows.find(x=>x.id===id); if(!r) return;
+      r.checkoutTime=new Date().toISOString();
+      setRows(rows); render();
+    }
+    function removeRow(id){
+      if(!confirm('確定刪除這筆？')) return;
+      setRows(getRows().filter(x=>x.id!==id)); render();
+    }
+    function seedDemo(){
+      const rows=getRows();
+      rows.push({id:uid(),parentName:'王小明',childNames:'王小花, 王小虎',phone:'0912345678',checkinTime:new Date().toISOString(),checkoutTime:null});
+      setRows(rows); render();
+    }
+
+    function exportJson(){
+      const data=getRows();
+      const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+      const a=document.createElement('a');
+      a.href=URL.createObjectURL(blob);
+      a.download='flap-mobile-guests.json';
+      document.body.appendChild(a); a.click(); a.remove();
+      URL.revokeObjectURL(a.href);
+    }
+
+    if(localStorage.getItem(OK_KEY)!=='1'){
+      document.getElementById('guard').style.display='block';
+    }else{
+      document.getElementById('panel').style.display='block';
+      document.getElementById('checkin').value=nowLocalInput();
+      render();
+    }
+  </script>
+</body>
+</html>

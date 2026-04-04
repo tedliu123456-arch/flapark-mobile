@@ -4,9 +4,10 @@ Mobile-first landing page for FLAPARK, created as a separate project so the orig
 
 ## Admin
 
-- Admin path: `./admin/`
-- First login: set your own PIN in browser localStorage.
-- You can edit title/subtitle, 6 menu cards, and store info links.
+- Dashboard: `./admin/`
+- Guests data backend: `./admin/guests.html`
+- Mobile homepage settings: `./admin/settings.html`
+- First login: go to `settings.html` and set your own PIN in browser localStorage.
 
 ## Local preview
 
