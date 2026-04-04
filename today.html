@@ -47,8 +47,8 @@
         <div class="k">來店總人數<div class="n" id="totalPeople">--</div></div>
         <div class="k">孩童總數<div class="n">92</div></div>
       </div>
-      <div class="muted" style="margin-top:8px" id="totalPeopleNote">※ 來店總人數採後台入場筆數（今日 50）</div>
-      <div class="muted" style="margin-top:6px">家長分開統計：主要家長 50｜次要家長 16</div>
+      <div class="muted" style="margin-top:8px" id="totalPeopleNote">※ 來店總人數由後台資料自動更新（家長姓名分隔符拆分）</div>
+      <div class="muted" style="margin-top:6px" id="guardianBreakdown">家長分開統計：主要家長 --｜次要家長 --</div>
     </div>
 
     <div class="card">
@@ -105,6 +105,11 @@
         const total = Number(data.totalPeople);
         if(Number.isFinite(total)){
           document.getElementById('totalPeople').textContent = String(total);
+          const mainG = Number(data.mainGuardians);
+          const secG = Number(data.secondaryGuardians);
+          if(Number.isFinite(mainG) && Number.isFinite(secG)){
+            document.getElementById('guardianBreakdown').textContent = `家長分開統計：主要家長 ${mainG}｜次要家長 ${secG}`;
+          }
           if(data.updatedAt){
             document.getElementById('totalPeopleNote').textContent = `※ 後台同步更新：${data.updatedAt}`;
           }
@@ -112,8 +117,8 @@
         }
         throw new Error('invalid totalPeople');
       }catch(e){
-        document.getElementById('totalPeople').textContent = '50';
-        document.getElementById('totalPeopleNote').textContent = '※ 後台同步資料暫時不可用，先顯示入場筆數備援值';
+        document.getElementById('totalPeople').textContent = '--';
+        document.getElementById('totalPeopleNote').textContent = '※ 後台同步資料暫時不可用';
       }
     })();
   </script>
