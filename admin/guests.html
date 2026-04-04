@@ -34,15 +34,24 @@
         </div>
         <div class="row">
           <div class="field"><label>電話</label><input id="phone" /></div>
+          <div class="field"><label>孩童年齡（可多位，逗號分隔）</label><input id="childAges" placeholder="例如：3,5" /></div>
+        </div>
+        <div class="row">
           <div class="field"><label>入場時間（預設現在）</label><input id="checkin" type="datetime-local" /></div>
+          <div class="field"><label>&nbsp;</label><input disabled value="年齡分析會自動統計" /></div>
         </div>
         <button class="btn" onclick="addGuest()">新增入場</button>
         <button class="btn ghost" onclick="seedDemo()">加入測試資料</button>
       </div>
 
       <div class="card">
+        <h1 style="font-size:16px">年齡分析</h1>
+        <div id="ageStats" class="muted">尚無年齡資料</div>
+      </div>
+
+      <div class="card">
         <table>
-          <thead><tr><th>#</th><th>家長</th><th>孩童</th><th>電話</th><th>入場</th><th>離場</th><th>狀態</th><th>操作</th></tr></thead>
+          <thead><tr><th>#</th><th>家長</th><th>孩童</th><th>年齡</th><th>電話</th><th>入場</th><th>離場</th><th>狀態</th><th>操作</th></tr></thead>
           <tbody id="rows"></tbody>
         </table>
       </div>
@@ -68,12 +77,33 @@
     function getRows(){try{return JSON.parse(localStorage.getItem(GUEST_KEY)||'[]')}catch{return []}}
     function setRows(v){localStorage.setItem(GUEST_KEY,JSON.stringify(v))}
 
+    function parseAges(ageText){
+      return String(ageText||'').split(/[，,\s]+/).map(x=>Number(x)).filter(n=>Number.isFinite(n)&&n>=0&&n<=18);
+    }
+
+    function renderAgeStats(rows){
+      const ages=rows.flatMap(r=>parseAges(r.childAges));
+      const el=document.getElementById('ageStats');
+      if(!ages.length){ el.textContent='尚無年齡資料'; return; }
+      const bucket={
+        '0-2歲':ages.filter(a=>a<=2).length,
+        '3-5歲':ages.filter(a=>a>=3&&a<=5).length,
+        '6-8歲':ages.filter(a=>a>=6&&a<=8).length,
+        '9歲以上':ages.filter(a=>a>=9).length
+      };
+      const avg=(ages.reduce((s,n)=>s+n,0)/ages.length).toFixed(1);
+      el.innerHTML=`平均年齡：<b>${avg}</b> 歲｜總孩童數：<b>${ages.length}</b><br/>
+      0-2歲：<b>${bucket['0-2歲']}</b>、3-5歲：<b>${bucket['3-5歲']}</b>、6-8歲：<b>${bucket['6-8歲']}</b>、9歲以上：<b>${bucket['9歲以上']}</b>`;
+    }
+
     function render(){
       const rows=getRows().sort((a,b)=>new Date(b.checkinTime)-new Date(a.checkinTime));
+      renderAgeStats(rows);
       document.getElementById('rows').innerHTML=rows.map((r,i)=>`<tr>
         <td>${rows.length-i}</td>
         <td>${r.parentName||''}</td>
         <td>${r.childNames||''}</td>
+        <td>${r.childAges||'—'}</td>
         <td>${r.phone||''}</td>
         <td>${fmt(r.checkinTime)}</td>
         <td>${fmt(r.checkoutTime)}</td>
@@ -82,21 +112,23 @@
           ${r.checkoutTime?'':`<button class='btn ghost' onclick="checkout('${r.id}')">結束</button>`}
           <button class='btn ghost' onclick="removeRow('${r.id}')">刪除</button>
         </td>
-      </tr>`).join('') || `<tr><td colspan='8' class='muted'>尚無資料</td></tr>`;
+      </tr>`).join('') || `<tr><td colspan='9' class='muted'>尚無資料</td></tr>`;
     }
 
     function addGuest(){
       const parentName=document.getElementById('parentName').value.trim();
       const childNames=document.getElementById('childNames').value.trim();
       const phone=document.getElementById('phone').value.trim();
+      const childAges=document.getElementById('childAges').value.trim();
       const checkin=document.getElementById('checkin').value;
       if(!parentName||!childNames) return alert('請至少填家長姓名與孩童姓名');
       const rows=getRows();
-      rows.push({id:uid(),parentName,childNames,phone,checkinTime:checkin?new Date(checkin).toISOString():new Date().toISOString(),checkoutTime:null});
+      rows.push({id:uid(),parentName,childNames,childAges,phone,checkinTime:checkin?new Date(checkin).toISOString():new Date().toISOString(),checkoutTime:null});
       setRows(rows); render();
       document.getElementById('parentName').value='';
       document.getElementById('childNames').value='';
       document.getElementById('phone').value='';
+      document.getElementById('childAges').value='';
       document.getElementById('checkin').value=nowLocalInput();
     }
 
@@ -112,7 +144,7 @@
     }
     function seedDemo(){
       const rows=getRows();
-      rows.push({id:uid(),parentName:'王小明',childNames:'王小花, 王小虎',phone:'0912345678',checkinTime:new Date().toISOString(),checkoutTime:null});
+      rows.push({id:uid(),parentName:'王小明',childNames:'王小花, 王小虎',childAges:'4,6',phone:'0912345678',checkinTime:new Date().toISOString(),checkoutTime:null});
       setRows(rows); render();
     }
 
