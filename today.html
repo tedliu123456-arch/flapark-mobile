@@ -9,12 +9,21 @@
     .wrap{max-width:720px;margin:0 auto;padding:16px}
     .card{background:#fff;border:1px solid #f1d9e9;border-radius:14px;padding:14px;margin:10px 0}
     h1{margin:0 0 8px;font-size:22px}
-    h2{margin:0 0 8px;font-size:17px}
+    h2{margin:0 0 10px;font-size:17px}
     .muted{color:#7b7280;font-size:13px}
     .kpi{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
     .k{background:#fdf2f8;border-radius:10px;padding:10px}
     .n{font-size:24px;font-weight:800}
     li{margin:4px 0}
+
+    /* Google 熱門時段感覺的橫條 */
+    .time-rows{display:grid;gap:10px}
+    .time-row{display:grid;grid-template-columns:92px 1fr 44px;gap:10px;align-items:center}
+    .time-label{font-size:13px;color:#4b4450}
+    .track{height:12px;background:#f3e8f0;border-radius:999px;overflow:hidden}
+    .fill{height:100%;background:linear-gradient(90deg,#a78bfa,#f472b6);border-radius:999px}
+    .count{font-size:12px;color:#6b6370;text-align:right}
+    .peak{background:#fff4fb;border:1px dashed #f2b4dc;padding:8px;border-radius:10px;font-size:12px;color:#8b3d74;margin-top:10px}
   </style>
 </head>
 <body>
@@ -45,12 +54,17 @@
     </div>
 
     <div class="card">
-      <h2>入場時段（Top 3）</h2>
-      <ul>
-        <li>10:00–10:59：11</li>
-        <li>11:00–11:59：9</li>
-        <li>14:00–14:59：9（15:00–15:59 也是 9）</li>
-      </ul>
+      <h2>入場時段（Google 風格條狀）</h2>
+      <div class="time-rows">
+        <div class="time-row"><div class="time-label">10:00–10:59</div><div class="track"><div class="fill" style="width:100%"></div></div><div class="count">11</div></div>
+        <div class="time-row"><div class="time-label">11:00–11:59</div><div class="track"><div class="fill" style="width:82%"></div></div><div class="count">9</div></div>
+        <div class="time-row"><div class="time-label">12:00–12:59</div><div class="track"><div class="fill" style="width:18%"></div></div><div class="count">2</div></div>
+        <div class="time-row"><div class="time-label">13:00–13:59</div><div class="track"><div class="fill" style="width:73%"></div></div><div class="count">8</div></div>
+        <div class="time-row"><div class="time-label">14:00–14:59</div><div class="track"><div class="fill" style="width:82%"></div></div><div class="count">9</div></div>
+        <div class="time-row"><div class="time-label">15:00–15:59</div><div class="track"><div class="fill" style="width:82%"></div></div><div class="count">9</div></div>
+        <div class="time-row"><div class="time-label">16:00–16:59</div><div class="track"><div class="fill" style="width:18%"></div></div><div class="count">2</div></div>
+      </div>
+      <div class="peak">尖峰時段：10:00（11 人）｜次高：11:00 / 14:00 / 15:00（各 9 人）</div>
     </div>
   </div>
 </body>
