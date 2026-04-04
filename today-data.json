@@ -5,6 +5,7 @@
   "secondaryGuardians": 16,
   "children": 92,
   "totalPeople": 158,
-  "updatedAt": "2026-04-04 20:33 GMT+8",
+  "countingMode": "全家長制（每筆家長欄位依分隔符拆分後逐一計數）",
+  "updatedAt": "2026-04-04 20:35 GMT+8",
   "source": "flapark.com/admin/visits（家長姓名以 、，,;； 分隔拆分）"
 }
