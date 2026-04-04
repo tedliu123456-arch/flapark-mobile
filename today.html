@@ -16,14 +16,15 @@
     .n{font-size:24px;font-weight:800}
     li{margin:4px 0}
 
-    /* Google 熱門時段感覺的橫條 */
-    .time-rows{display:grid;gap:10px}
-    .time-row{display:grid;grid-template-columns:92px 1fr 44px;gap:10px;align-items:center}
-    .time-label{font-size:13px;color:#4b4450}
-    .track{height:12px;background:#f3e8f0;border-radius:999px;overflow:hidden}
-    .fill{height:100%;background:linear-gradient(90deg,#a78bfa,#f472b6);border-radius:999px}
-    .count{font-size:12px;color:#6b6370;text-align:right}
-    .peak{background:#fff4fb;border:1px dashed #f2b4dc;padding:8px;border-radius:10px;font-size:12px;color:#8b3d74;margin-top:10px}
+    /* Google 商家熱門時段風格（直條） */
+    .hot-wrap{overflow-x:auto;padding-bottom:6px}
+    .hot-bars{display:grid;grid-template-columns:repeat(7,minmax(54px,1fr));gap:10px;align-items:end;min-width:420px;height:170px}
+    .hot-col{display:flex;flex-direction:column;align-items:center;gap:6px}
+    .hot-bar{width:100%;border-radius:8px 8px 0 0;background:linear-gradient(180deg,#c4b5fd,#a78bfa);position:relative;min-height:8px}
+    .hot-bar.peak{background:linear-gradient(180deg,#f9a8d4,#f472b6)}
+    .hot-num{font-size:12px;color:#6b6370;font-weight:700}
+    .hot-time{font-size:11px;color:#6b6370}
+    .peak-note{background:#fff4fb;border:1px dashed #f2b4dc;padding:8px;border-radius:10px;font-size:12px;color:#8b3d74;margin-top:10px}
   </style>
 </head>
 <body>
@@ -54,17 +55,19 @@
     </div>
 
     <div class="card">
-      <h2>入場時段（Google 風格條狀）</h2>
-      <div class="time-rows">
-        <div class="time-row"><div class="time-label">10:00–10:59</div><div class="track"><div class="fill" style="width:100%"></div></div><div class="count">11</div></div>
-        <div class="time-row"><div class="time-label">11:00–11:59</div><div class="track"><div class="fill" style="width:82%"></div></div><div class="count">9</div></div>
-        <div class="time-row"><div class="time-label">12:00–12:59</div><div class="track"><div class="fill" style="width:18%"></div></div><div class="count">2</div></div>
-        <div class="time-row"><div class="time-label">13:00–13:59</div><div class="track"><div class="fill" style="width:73%"></div></div><div class="count">8</div></div>
-        <div class="time-row"><div class="time-label">14:00–14:59</div><div class="track"><div class="fill" style="width:82%"></div></div><div class="count">9</div></div>
-        <div class="time-row"><div class="time-label">15:00–15:59</div><div class="track"><div class="fill" style="width:82%"></div></div><div class="count">9</div></div>
-        <div class="time-row"><div class="time-label">16:00–16:59</div><div class="track"><div class="fill" style="width:18%"></div></div><div class="count">2</div></div>
+      <h2>入場時段（Google 商家熱門時段風格）</h2>
+      <div class="hot-wrap">
+        <div class="hot-bars">
+          <div class="hot-col"><div class="hot-num">11</div><div class="hot-bar peak" style="height:100%"></div><div class="hot-time">10:00</div></div>
+          <div class="hot-col"><div class="hot-num">9</div><div class="hot-bar" style="height:82%"></div><div class="hot-time">11:00</div></div>
+          <div class="hot-col"><div class="hot-num">2</div><div class="hot-bar" style="height:18%"></div><div class="hot-time">12:00</div></div>
+          <div class="hot-col"><div class="hot-num">8</div><div class="hot-bar" style="height:73%"></div><div class="hot-time">13:00</div></div>
+          <div class="hot-col"><div class="hot-num">9</div><div class="hot-bar" style="height:82%"></div><div class="hot-time">14:00</div></div>
+          <div class="hot-col"><div class="hot-num">9</div><div class="hot-bar" style="height:82%"></div><div class="hot-time">15:00</div></div>
+          <div class="hot-col"><div class="hot-num">2</div><div class="hot-bar" style="height:18%"></div><div class="hot-time">16:00</div></div>
+        </div>
       </div>
-      <div class="peak">尖峰時段：10:00（11 人）｜次高：11:00 / 14:00 / 15:00（各 9 人）</div>
+      <div class="peak-note">尖峰時段：10:00（11 人）｜次高：11:00 / 14:00 / 15:00（各 9 人）</div>
     </div>
   </div>
 </body>
