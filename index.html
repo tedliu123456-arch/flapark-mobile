@@ -92,6 +92,11 @@
       <div id="top3" class="muted">—</div>
       <div class="bars" id="bars"></div>
     </div>
+
+    <div class="card">
+      <h2>完整文字報表</h2>
+      <div id="fullReport" class="muted">尚未產生</div>
+    </div>
   </div>
 
   <script>
@@ -167,7 +172,23 @@
       const timeline=Object.entries(hm).sort((a,b)=>a[0].localeCompare(b[0]));
       const max=Math.max(1,...timeline.map(x=>x[1]));
       document.getElementById('bars').innerHTML=timeline.map(([h,c])=>`<div class="bar" style="height:${Math.round(c/max*160)}px"><span>${c}</span><b>${h}</b></div>`).join('');
+
+      const reportLines=[
+        `分析日期：${dateStr}`,
+        `入場筆數：${todayRows.length}`,
+        `大人數量：${adults}`,
+        `孩童總數：${childCount}`,
+        `平均年齡：${avg} 歲`,
+        `年齡分布：0-2歲 ${bucket['0-2歲']}｜3-5歲 ${bucket['3-5歲']}｜6-8歲 ${bucket['6-8歲']}｜9歲以上 ${bucket['9歲以上']}`,
+        `新舊客比例：新客 ${newC} (${nPct}%) / 舊客 ${oldC} (${oPct}%)`,
+        `熱門時段 Top3：${top3}`
+      ];
+      document.getElementById('fullReport').innerHTML=reportLines.join('<br/>');
     }
+
+    // 自動載入本機資料並直接跑今天分析
+    try{ DATA=JSON.parse(localStorage.getItem(KEY)||'[]'); }catch{}
+    if(DATA.length){ run(); }
   </script>
 </body>
 </html>
