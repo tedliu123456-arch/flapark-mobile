@@ -17,13 +17,13 @@
     li{margin:4px 0}
 
     /* Google 商家熱門時段風格（直條） */
-    .hot-wrap{overflow-x:auto;padding-bottom:6px}
-    .hot-bars{display:grid;grid-template-columns:repeat(10,minmax(54px,1fr));gap:10px;align-items:end;min-width:600px;height:170px}
-    .hot-col{display:flex;flex-direction:column;align-items:center;gap:6px}
-    .hot-bar{width:100%;border-radius:8px 8px 0 0;background:linear-gradient(180deg,#c4b5fd,#a78bfa);position:relative;min-height:8px}
+    .hot-wrap{overflow:visible;padding-bottom:2px}
+    .hot-bars{display:grid;grid-template-columns:repeat(10,minmax(0,1fr));gap:4px;align-items:end;height:132px}
+    .hot-col{display:flex;flex-direction:column;align-items:center;gap:4px}
+    .hot-bar{width:100%;border-radius:6px 6px 0 0;background:linear-gradient(180deg,#c4b5fd,#a78bfa);position:relative;min-height:6px}
     .hot-bar.peak{background:linear-gradient(180deg,#f9a8d4,#f472b6)}
-    .hot-num{font-size:12px;color:#6b6370;font-weight:700}
-    .hot-time{font-size:11px;color:#6b6370}
+    .hot-num{font-size:10px;color:#6b6370;font-weight:700}
+    .hot-time{font-size:9px;color:#6b6370}
     .peak-note{background:#fff4fb;border:1px dashed #f2b4dc;padding:8px;border-radius:10px;font-size:12px;color:#8b3d74;margin-top:10px}
   </style>
 </head>
@@ -38,7 +38,7 @@
       <h2>核心指標</h2>
       <div class="kpi">
         <div class="k">入場筆數<div class="n">50</div></div>
-        <div class="k">總人數<div class="n">142</div></div>
+        <div class="k">來店總人數<div class="n">142</div></div>
         <div class="k">孩童總數<div class="n">92</div></div>
 
       </div>
