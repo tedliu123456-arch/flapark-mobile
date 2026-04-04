@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>FLAP Mobile 後台</title>
+  <style>
+    :root{--bg:#fff7fb;--card:#fff;--text:#2f2a2f;--line:#f1d9e9;--pink:#f472b6}
+    *{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--text);font-family:"Noto Sans TC","PingFang TC",-apple-system,sans-serif}
+    .wrap{max-width:560px;margin:0 auto;padding:14px}.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin:10px 0}
+    h1{font-size:20px;margin:0 0 10px}.muted{font-size:12px;color:#7b7280}
+    .field{margin:8px 0}.field label{display:block;font-size:13px;margin-bottom:4px}.field input,.field textarea{width:100%;padding:10px;border:1px solid #e8d4e3;border-radius:10px;font-size:14px}
+    .row{display:grid;grid-template-columns:1fr 1fr;gap:8px}.btn{border:0;background:linear-gradient(180deg,#f891c7,#f472b6);color:#fff;padding:10px 12px;border-radius:10px;font-weight:700;cursor:pointer}
+    .btn.ghost{background:#fff;color:#444;border:1px solid #ddd}.item{border:1px dashed #efcde2;border-radius:10px;padding:10px;margin-top:8px}
+    #editor{display:none}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card" id="loginBox">
+      <h1>FLAP Mobile 後台</h1>
+      <p class="muted">第一次使用請先設定 PIN。之後輸入同一組 PIN 登入。</p>
+      <div class="field"><label>PIN</label><input id="pin" type="password" placeholder="輸入管理 PIN" /></div>
+      <button class="btn" onclick="login()">登入 / 設定 PIN</button>
+    </div>
+
+    <div id="editor">
+      <div class="card">
+        <h1>頁面設定</h1>
+        <div class="field"><label>標題</label><input id="title" /></div>
+        <div class="field"><label>副標</label><input id="subtitle" /></div>
+      </div>
+
+      <div class="card">
+        <h1>選單（6 格）</h1>
+        <div id="menuList"></div>
+      </div>
+
+      <div class="card">
+        <h1>店家資訊</h1>
+        <div id="infoList"></div>
+      </div>
+
+      <div class="card" style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="btn" onclick="save()">儲存設定</button>
+        <button class="btn ghost" onclick="window.open('../','_blank')">預覽首頁</button>
+        <button class="btn ghost" onclick="logout()">登出</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const KEY='flap_mobile_config_v1';
+    const PIN_KEY='flap_mobile_admin_pin';
+    const defaults={
+      title:'粉獅堡 F.L.A.P｜手機版入口',
+      subtitle:'Mobile-first 快速入口（不影響原站）',
+      menu:[
+        {label:'同意書',href:'https://flapark.com/consent',icon:'📄',tone:'pink',newTab:false},
+        {label:'粉獅課程',href:'https://flapark.com/course',icon:'📚',tone:'purple',newTab:false},
+        {label:'課程預約',href:'https://flapark.com/reservation',icon:'📅',tone:'blue',newTab:false},
+        {label:'官方 LINE',href:'https://line.me/R/ti/p/@472petgm',icon:'LINE',tone:'green',newTab:true},
+        {label:'官方 FB',href:'https://www.facebook.com/share/17yf4x5bfZ/?mibextid=wwXIfr',icon:'f',tone:'blue',newTab:true},
+        {label:'店家資訊',href:'#info',icon:'ℹ️',tone:'pink',newTab:false}
+      ],
+      info:[
+        {text:'新竹縣竹北市勝利十一路225號',href:'https://share.google/ZVUlhPTL46qbcJrTc'},
+        {text:'03-658-1908',href:'tel:036581908'},
+        {text:'@472petgm',href:'https://line.me/R/ti/p/@472petgm'}
+      ]
+    };
+
+    function getCfg(){
+      try{return {...defaults,...JSON.parse(localStorage.getItem(KEY)||'{}')};}
+      catch{return defaults;}
+    }
+
+    function login(){
+      const pin=document.getElementById('pin').value.trim();
+      if(!pin) return alert('請輸入 PIN');
+      const saved=localStorage.getItem(PIN_KEY);
+      if(!saved){
+        localStorage.setItem(PIN_KEY,pin);
+      }else if(saved!==pin){
+        return alert('PIN 錯誤');
+      }
+      localStorage.setItem('flap_mobile_admin_ok','1');
+      enter();
+    }
+
+    function logout(){
+      localStorage.removeItem('flap_mobile_admin_ok');
+      location.reload();
+    }
+
+    function enter(){
+      document.getElementById('loginBox').style.display='none';
+      document.getElementById('editor').style.display='block';
+      const cfg=getCfg();
+      document.getElementById('title').value=cfg.title||'';
+      document.getElementById('subtitle').value=cfg.subtitle||'';
+      renderMenu(cfg.menu||[]);
+      renderInfo(cfg.info||[]);
+    }
+
+    function renderMenu(menu){
+      const tones=['pink','purple','blue','green'];
+      const el=document.getElementById('menuList');
+      el.innerHTML='';
+      for(let i=0;i<6;i++){
+        const m=menu[i]||{label:'',href:'#',icon:'•',tone:tones[i%tones.length],newTab:false};
+        const box=document.createElement('div');
+        box.className='item';
+        box.innerHTML=`<div class='field'><label>第 ${i+1} 格標題</label><input id='m_label_${i}' value='${m.label||''}' /></div>
+        <div class='field'><label>連結</label><input id='m_href_${i}' value='${m.href||''}' /></div>
+        <div class='row'>
+          <div class='field'><label>圖示文字</label><input id='m_icon_${i}' value='${m.icon||''}' /></div>
+          <div class='field'><label>色系（pink/purple/blue/green）</label><input id='m_tone_${i}' value='${m.tone||'pink'}' /></div>
+        </div>`;
+        el.appendChild(box);
+      }
+    }
+
+    function renderInfo(info){
+      const el=document.getElementById('infoList');
+      el.innerHTML='';
+      for(let i=0;i<3;i++){
+        const r=info[i]||{text:'',href:'#'};
+        const box=document.createElement('div');
+        box.className='item';
+        box.innerHTML=`<div class='field'><label>資訊 ${i+1} 文字</label><input id='i_text_${i}' value='${r.text||''}' /></div>
+        <div class='field'><label>資訊 ${i+1} 連結</label><input id='i_href_${i}' value='${r.href||''}' /></div>`;
+        el.appendChild(box);
+      }
+    }
+
+    function save(){
+      const cfg={title:document.getElementById('title').value.trim(),subtitle:document.getElementById('subtitle').value.trim(),menu:[],info:[]};
+      for(let i=0;i<6;i++){
+        cfg.menu.push({
+          label:document.getElementById(`m_label_${i}`).value.trim(),
+          href:document.getElementById(`m_href_${i}`).value.trim()||'#',
+          icon:document.getElementById(`m_icon_${i}`).value.trim()||'•',
+          tone:document.getElementById(`m_tone_${i}`).value.trim()||'pink',
+          newTab:(document.getElementById(`m_href_${i}`).value||'').startsWith('http')
+        });
+      }
+      for(let i=0;i<3;i++){
+        cfg.info.push({text:document.getElementById(`i_text_${i}`).value.trim(),href:document.getElementById(`i_href_${i}`).value.trim()||'#'});
+      }
+      localStorage.setItem(KEY,JSON.stringify(cfg));
+      alert('已儲存，請回首頁重整查看');
+    }
+
+    if(localStorage.getItem('flap_mobile_admin_ok')==='1') enter();
+  </script>
+</body>
+</html>
