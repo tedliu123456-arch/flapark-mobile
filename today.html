@@ -16,14 +16,13 @@
     .n{font-size:24px;font-weight:800}
     li{margin:4px 0}
 
-    /* Google 商家熱門時段風格（直條） */
-    .hot-wrap{overflow:visible;padding-bottom:2px}
-    .hot-bars{display:grid;grid-template-columns:repeat(10,minmax(0,1fr));gap:4px;align-items:end;height:132px}
-    .hot-col{display:flex;flex-direction:column;align-items:center;gap:4px}
-    .hot-bar{width:100%;border-radius:6px 6px 0 0;background:linear-gradient(180deg,#c4b5fd,#a78bfa);position:relative;min-height:6px}
-    .hot-bar.peak{background:linear-gradient(180deg,#f9a8d4,#f472b6)}
-    .hot-num{font-size:10px;color:#6b6370;font-weight:700}
-    .hot-time{font-size:9px;color:#6b6370}
+    /* 時段條（手機單欄，無左右滑） */
+    .slot-list{display:grid;gap:8px}
+    .slot{display:grid;grid-template-columns:86px 1fr 38px;gap:8px;align-items:center}
+    .slot-time{font-size:12px;color:#4b4450}
+    .slot-track{height:10px;background:#f3e8f0;border-radius:999px;overflow:hidden}
+    .slot-fill{height:100%;background:linear-gradient(90deg,#a78bfa,#f472b6);border-radius:999px}
+    .slot-count{font-size:11px;color:#6b6370;text-align:right}
     .peak-note{background:#fff4fb;border:1px dashed #f2b4dc;padding:8px;border-radius:10px;font-size:12px;color:#8b3d74;margin-top:10px}
   </style>
 </head>
@@ -65,19 +64,17 @@
 
     <div class="card">
       <h2>入場時段</h2>
-      <div class="hot-wrap">
-        <div class="hot-bars">
-          <div class="hot-col"><div class="hot-num">11</div><div class="hot-bar peak" style="height:100%"></div><div class="hot-time">10:00</div></div>
-          <div class="hot-col"><div class="hot-num">9</div><div class="hot-bar" style="height:82%"></div><div class="hot-time">11:00</div></div>
-          <div class="hot-col"><div class="hot-num">2</div><div class="hot-bar" style="height:18%"></div><div class="hot-time">12:00</div></div>
-          <div class="hot-col"><div class="hot-num">8</div><div class="hot-bar" style="height:73%"></div><div class="hot-time">13:00</div></div>
-          <div class="hot-col"><div class="hot-num">9</div><div class="hot-bar" style="height:82%"></div><div class="hot-time">14:00</div></div>
-          <div class="hot-col"><div class="hot-num">9</div><div class="hot-bar" style="height:82%"></div><div class="hot-time">15:00</div></div>
-          <div class="hot-col"><div class="hot-num">2</div><div class="hot-bar" style="height:18%"></div><div class="hot-time">16:00</div></div>
-          <div class="hot-col"><div class="hot-num">0</div><div class="hot-bar" style="height:8%"></div><div class="hot-time">17:00</div></div>
-          <div class="hot-col"><div class="hot-num">0</div><div class="hot-bar" style="height:8%"></div><div class="hot-time">18:00</div></div>
-          <div class="hot-col"><div class="hot-num">0</div><div class="hot-bar" style="height:8%"></div><div class="hot-time">18:30</div></div>
-        </div>
+      <div class="slot-list">
+        <div class="slot"><div class="slot-time">10:00</div><div class="slot-track"><div class="slot-fill" style="width:100%"></div></div><div class="slot-count">11</div></div>
+        <div class="slot"><div class="slot-time">11:00</div><div class="slot-track"><div class="slot-fill" style="width:82%"></div></div><div class="slot-count">9</div></div>
+        <div class="slot"><div class="slot-time">12:00</div><div class="slot-track"><div class="slot-fill" style="width:18%"></div></div><div class="slot-count">2</div></div>
+        <div class="slot"><div class="slot-time">13:00</div><div class="slot-track"><div class="slot-fill" style="width:73%"></div></div><div class="slot-count">8</div></div>
+        <div class="slot"><div class="slot-time">14:00</div><div class="slot-track"><div class="slot-fill" style="width:82%"></div></div><div class="slot-count">9</div></div>
+        <div class="slot"><div class="slot-time">15:00</div><div class="slot-track"><div class="slot-fill" style="width:82%"></div></div><div class="slot-count">9</div></div>
+        <div class="slot"><div class="slot-time">16:00</div><div class="slot-track"><div class="slot-fill" style="width:18%"></div></div><div class="slot-count">2</div></div>
+        <div class="slot"><div class="slot-time">17:00</div><div class="slot-track"><div class="slot-fill" style="width:0%"></div></div><div class="slot-count">0</div></div>
+        <div class="slot"><div class="slot-time">18:00</div><div class="slot-track"><div class="slot-fill" style="width:0%"></div></div><div class="slot-count">0</div></div>
+        <div class="slot"><div class="slot-time">18:30</div><div class="slot-track"><div class="slot-fill" style="width:0%"></div></div><div class="slot-count">0</div></div>
       </div>
       <div class="peak-note">尖峰時段：10:00（11 人）｜次高：11:00 / 14:00 / 15:00（各 9 人）</div>
     </div>
