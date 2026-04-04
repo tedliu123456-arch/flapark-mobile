@@ -18,11 +18,11 @@
 
     /* 時段條（手機單欄，無左右滑） */
     .slot-list{display:grid;gap:8px}
-    .slot{display:grid;grid-template-columns:56px 26px 1fr 34px;gap:8px;align-items:center}
+    .slot{display:grid;grid-template-columns:56px 1fr 54px 34px;gap:8px;align-items:center}
     .slot-time{font-size:13px;color:#4b4450;font-weight:700;text-align:right;font-variant-numeric:tabular-nums}
-    .slot-vtrack{height:30px;width:18px;background:#f3e8f0;border-radius:6px;display:flex;align-items:flex-end;justify-content:center;overflow:hidden}
-    .slot-vfill{width:100%;background:linear-gradient(180deg,#a78bfa,#f472b6);border-radius:6px 6px 0 0}
-    .slot-label{font-size:12px;color:#8a8290;line-height:1.2}
+    .slot-track{height:12px;background:#f3e8f0;border-radius:999px;overflow:hidden}
+    .slot-fill{height:100%;background:linear-gradient(90deg,#a78bfa,#f472b6);border-radius:999px}
+    .slot-label{font-size:12px;color:#8a8290;line-height:1.2;text-align:right}
     .slot-count{font-size:12px;color:#6b6370;text-align:right;font-weight:700;font-variant-numeric:tabular-nums}
     .peak-note{background:#fff4fb;border:1px dashed #f2b4dc;padding:8px;border-radius:10px;font-size:12px;color:#8b3d74;margin-top:10px}
   </style>
@@ -66,15 +66,15 @@
     <div class="card">
       <h2>入場時段</h2>
       <div class="slot-list">
-        <div class="slot"><div class="slot-time">10:00</div><div class="slot-vtrack"><div class="slot-vfill" style="height:100%"></div></div><div class="slot-label">尖峰時段</div><div class="slot-count">11</div></div>
-        <div class="slot"><div class="slot-time">11:00</div><div class="slot-vtrack"><div class="slot-vfill" style="height:78%"></div></div><div class="slot-label">熱門</div><div class="slot-count">9</div></div>
-        <div class="slot"><div class="slot-time">12:00</div><div class="slot-vtrack"><div class="slot-vfill" style="height:22%"></div></div><div class="slot-label">離峰</div><div class="slot-count">2</div></div>
-        <div class="slot"><div class="slot-time">13:00</div><div class="slot-vtrack"><div class="slot-vfill" style="height:68%"></div></div><div class="slot-label">熱門</div><div class="slot-count">8</div></div>
-        <div class="slot"><div class="slot-time">14:00</div><div class="slot-vtrack"><div class="slot-vfill" style="height:78%"></div></div><div class="slot-label">熱門</div><div class="slot-count">9</div></div>
-        <div class="slot"><div class="slot-time">15:00</div><div class="slot-vtrack"><div class="slot-vfill" style="height:78%"></div></div><div class="slot-label">熱門</div><div class="slot-count">9</div></div>
-        <div class="slot"><div class="slot-time">16:00</div><div class="slot-vtrack"><div class="slot-vfill" style="height:22%"></div></div><div class="slot-label">離峰</div><div class="slot-count">2</div></div>
-        <div class="slot"><div class="slot-time">17:00</div><div class="slot-vtrack"><div class="slot-vfill" style="height:6%"></div></div><div class="slot-label">無入場</div><div class="slot-count">0</div></div>
-        <div class="slot"><div class="slot-time">18:00</div><div class="slot-vtrack"><div class="slot-vfill" style="height:6%"></div></div><div class="slot-label">無入場</div><div class="slot-count">0</div></div>
+        <div class="slot"><div class="slot-time">10:00</div><div class="slot-track"><div class="slot-fill" style="width:100%"></div></div><div class="slot-label">尖峰時段</div><div class="slot-count">11</div></div>
+        <div class="slot"><div class="slot-time">11:00</div><div class="slot-track"><div class="slot-fill" style="width:78%"></div></div><div class="slot-label">熱門</div><div class="slot-count">9</div></div>
+        <div class="slot"><div class="slot-time">12:00</div><div class="slot-track"><div class="slot-fill" style="width:22%"></div></div><div class="slot-label">離峰</div><div class="slot-count">2</div></div>
+        <div class="slot"><div class="slot-time">13:00</div><div class="slot-track"><div class="slot-fill" style="width:68%"></div></div><div class="slot-label">熱門</div><div class="slot-count">8</div></div>
+        <div class="slot"><div class="slot-time">14:00</div><div class="slot-track"><div class="slot-fill" style="width:78%"></div></div><div class="slot-label">熱門</div><div class="slot-count">9</div></div>
+        <div class="slot"><div class="slot-time">15:00</div><div class="slot-track"><div class="slot-fill" style="width:78%"></div></div><div class="slot-label">熱門</div><div class="slot-count">9</div></div>
+        <div class="slot"><div class="slot-time">16:00</div><div class="slot-track"><div class="slot-fill" style="width:22%"></div></div><div class="slot-label">離峰</div><div class="slot-count">2</div></div>
+        <div class="slot"><div class="slot-time">17:00</div><div class="slot-track"><div class="slot-fill" style="width:0%"></div></div><div class="slot-label">無入場</div><div class="slot-count">0</div></div>
+        <div class="slot"><div class="slot-time">18:00</div><div class="slot-track"><div class="slot-fill" style="width:0%"></div></div><div class="slot-label">無入場</div><div class="slot-count">0</div></div>
       </div>
       <div class="peak-note">尖峰時段：10:00（11 人）｜次高：11:00 / 14:00 / 15:00（各 9 人）</div>
     </div>
