@@ -6,17 +6,16 @@
   <title>FLAP 今日資料分析</title>
   <style>
     body{font-family:"Noto Sans TC",-apple-system,sans-serif;background:#fff7fb;color:#2f2a2f;margin:0;line-height:1.45;-webkit-font-smoothing:antialiased}
-    .wrap{max-width:720px;margin:0 auto;padding:16px}
+    .wrap{max-width:760px;margin:0 auto;padding:14px}
     .card{background:#fff;border:1px solid #f1d9e9;border-radius:14px;padding:14px;margin:10px 0}
-    h1{margin:0 0 8px;font-size:22px;letter-spacing:.2px}
-    h2{margin:0 0 10px;font-size:17px;letter-spacing:.2px}
+    h1{margin:0 0 6px;font-size:22px}
+    h2{margin:0 0 10px;font-size:17px}
     .muted{color:#7b7280;font-size:13px}
     .kpi{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-    .k{background:#fdf2f8;border-radius:10px;padding:10px;min-height:88px;display:flex;flex-direction:column;justify-content:space-between}
+    .k{background:#fdf2f8;border-radius:10px;padding:10px;min-height:86px;display:flex;flex-direction:column;justify-content:space-between}
     .n{font-size:24px;font-weight:800;line-height:1;font-variant-numeric:tabular-nums}
+    ul{margin:0;padding-left:18px}
     li{margin:4px 0;font-size:14px}
-
-    /* 時段條（手機單欄，無左右滑） */
     .slot-list{display:grid;gap:8px}
     .slot{display:grid;grid-template-columns:56px 1fr 54px 34px;gap:8px;align-items:center}
     .slot-time{font-size:13px;color:#4b4450;font-weight:700;text-align:right;font-variant-numeric:tabular-nums}
@@ -31,91 +30,108 @@
   <div class="wrap">
     <div class="card">
       <h1>FLAP 今日資料分析</h1>
-      <div class="muted">日期：2026-04-05（更新時間：2026-04-05 15:59 GMT+8）</div>
-
+      <div class="muted" id="metaLine">日期：--（更新時間：--）</div>
     </div>
-
 
     <div class="card">
       <h2>核心指標</h2>
       <div class="kpi">
-        <div class="k">入場筆數<div class="n">29</div></div>
+        <div class="k">入場筆數<div class="n" id="visitCount">--</div></div>
         <div class="k">來店總人數<div class="n" id="totalPeople">--</div></div>
-        <div class="k">孩童總數<div class="n">45</div></div>
+        <div class="k">孩童總數<div class="n" id="childrenCount">--</div></div>
       </div>
-      <div class="muted" style="margin-top:8px" id="totalPeopleNote">※ 全家長制：來店總人數由後台資料自動更新（家長姓名分隔符拆分）</div>
+      <div class="muted" style="margin-top:8px" id="totalPeopleNote">※ 全家長制：來店總人數由後台資料自動更新</div>
       <div class="muted" style="margin-top:6px" id="guardianBreakdown">家長分開統計：主要家長 --｜次要家長 --</div>
     </div>
 
     <div class="card">
       <h2>年齡分布</h2>
       <ul>
-        <li>0-2 歲：6</li>
-        <li>3-5 歲：17</li>
-        <li>6-8 歲：12</li>
-        <li>9 歲以上：10</li>
+        <li>0-2 歲：<span id="age0_2">--</span></li>
+        <li>3-5 歲：<span id="age3_5">--</span></li>
+        <li>6-8 歲：<span id="age6_8">--</span></li>
+        <li>9 歲以上：<span id="age9p">--</span></li>
       </ul>
     </div>
 
     <div class="card">
       <h2>新舊客比例</h2>
       <ul>
-        <li>新客：29（100%）</li>
-        <li>舊客：0（0%）</li>
+        <li id="newLine">新客：--</li>
+        <li id="oldLine">舊客：--</li>
       </ul>
     </div>
 
     <div class="card">
       <h2>預估營業額</h2>
       <ul>
-        <li>兒童票：300 元／人（45 人）</li>
-        <li>家長票：200 元／人（全家長 36 人）</li>
-        <li><b>預估營業額：20,700 元</b></li>
+        <li id="childRevenueLine">兒童票：300 元／人（-- 人）</li>
+        <li id="guardianRevenueLine">家長票：200 元／人（全家長 -- 人）</li>
+        <li><b id="revenueLine">預估營業額：-- 元</b></li>
       </ul>
       <div class="muted">公式：兒童人數 × 300 + 全家長人數 × 200</div>
     </div>
 
     <div class="card">
       <h2>入場時段</h2>
-      <div class="slot-list">
-        <div class="slot"><div class="slot-time">10:00</div><div class="slot-track"><div class="slot-fill" style="width:50%"></div></div><div class="slot-label">一般</div><div class="slot-count">4</div></div>
-        <div class="slot"><div class="slot-time">11:00</div><div class="slot-track"><div class="slot-fill" style="width:25%"></div></div><div class="slot-label">離峰</div><div class="slot-count">2</div></div>
-        <div class="slot"><div class="slot-time">12:00</div><div class="slot-track"><div class="slot-fill" style="width:75%"></div></div><div class="slot-label">熱門</div><div class="slot-count">6</div></div>
-        <div class="slot"><div class="slot-time">13:00</div><div class="slot-track"><div class="slot-fill" style="width:100%"></div></div><div class="slot-label">尖峰時段</div><div class="slot-count">8</div></div>
-        <div class="slot"><div class="slot-time">14:00</div><div class="slot-track"><div class="slot-fill" style="width:50%"></div></div><div class="slot-label">一般</div><div class="slot-count">4</div></div>
-        <div class="slot"><div class="slot-time">15:00</div><div class="slot-track"><div class="slot-fill" style="width:62%"></div></div><div class="slot-label">一般</div><div class="slot-count">5</div></div>
-        <div class="slot"><div class="slot-time">16:00</div><div class="slot-track"><div class="slot-fill" style="width:0%"></div></div><div class="slot-label">無入場</div><div class="slot-count">0</div></div>
-        <div class="slot"><div class="slot-time">17:00</div><div class="slot-track"><div class="slot-fill" style="width:0%"></div></div><div class="slot-label">無入場</div><div class="slot-count">0</div></div>
-        <div class="slot"><div class="slot-time">18:00</div><div class="slot-track"><div class="slot-fill" style="width:0%"></div></div><div class="slot-label">無入場</div><div class="slot-count">0</div></div>
-      </div>
-      <div class="peak-note">尖峰時段：13:00（8 人）｜次高：12:00（6 人）</div>
+      <div class="slot-list" id="slotList"></div>
+      <div class="peak-note" id="peakNote">尖峰時段：--</div>
     </div>
   </div>
 
   <script>
+    function fmt(n){ return Number(n||0).toLocaleString('zh-TW'); }
+    function slotLabel(c, max){
+      if(c===0) return '無入場';
+      if(c===max) return '尖峰時段';
+      if(c>=max*0.7) return '熱門';
+      if(c>=max*0.3) return '一般';
+      return '離峰';
+    }
     (async function(){
       try{
-        const res = await fetch('./today-data.json?t=' + Date.now(), { cache: 'no-store' });
-        if(!res.ok) throw new Error('no data');
-        const data = await res.json();
-        const total = Number(data.totalPeople);
-        if(Number.isFinite(total)){
-          document.getElementById('totalPeople').textContent = String(total);
-          const mainG = Number(data.mainGuardians);
-          const secG = Number(data.secondaryGuardians);
-          if(Number.isFinite(mainG) && Number.isFinite(secG)){
-            document.getElementById('guardianBreakdown').textContent = `家長分開統計：主要家長 ${mainG}｜次要家長 ${secG}`;
-          }
-          if(data.updatedAt){
-            const mode = data.countingMode ? `（${data.countingMode}）` : '';
-            document.getElementById('totalPeopleNote').textContent = `※ 全家長制${mode}｜後台同步更新：${data.updatedAt}`;
-          }
-          return;
-        }
-        throw new Error('invalid totalPeople');
-      }catch(e){
-        document.getElementById('totalPeople').textContent = '--';
-        document.getElementById('totalPeopleNote').textContent = '※ 全家長制：後台同步資料暫時不可用';
+        const res = await fetch('./today-data.json?t=' + Date.now(), {cache:'no-store'});
+        if(!res.ok) throw new Error('load fail');
+        const d = await res.json();
+
+        document.getElementById('metaLine').textContent = `日期：${d.date || '--'}（更新時間：${d.updatedAt || '--'}）`;
+        document.getElementById('visitCount').textContent = fmt(d.visitCount);
+        document.getElementById('totalPeople').textContent = fmt(d.totalPeople);
+        document.getElementById('childrenCount').textContent = fmt(d.children);
+        document.getElementById('guardianBreakdown').textContent = `家長分開統計：主要家長 ${fmt(d.mainGuardians)}｜次要家長 ${fmt(d.secondaryGuardians)}`;
+        document.getElementById('totalPeopleNote').textContent = `※ 全家長制：${d.countingMode || '後台資料自動更新'}`;
+
+        const ab = d.ageBuckets || {};
+        document.getElementById('age0_2').textContent = fmt(ab['0-2']);
+        document.getElementById('age3_5').textContent = fmt(ab['3-5']);
+        document.getElementById('age6_8').textContent = fmt(ab['6-8']);
+        document.getElementById('age9p').textContent = fmt(ab['9+']);
+
+        document.getElementById('newLine').textContent = `新客：${fmt(d.newCnt)}（${d.newPct ?? 0}%）`;
+        document.getElementById('oldLine').textContent = `舊客：${fmt(d.oldCnt)}（${d.oldPct ?? 0}%）`;
+
+        document.getElementById('childRevenueLine').textContent = `兒童票：300 元／人（${fmt(d.children)} 人）`;
+        document.getElementById('guardianRevenueLine').textContent = `家長票：200 元／人（全家長 ${fmt(d.guardiansTotal)} 人）`;
+        document.getElementById('revenueLine').textContent = `預估營業額：${fmt(d.revenue)} 元`;
+
+        const hm = d.hourMap || {};
+        const hours = ['10','11','12','13','14','15','16','17','18'];
+        const max = Math.max(1, ...hours.map(h => Number(hm[h]||0)));
+        const list = document.getElementById('slotList');
+        list.innerHTML = hours.map(h => {
+          const c = Number(hm[h] || 0);
+          const w = Math.round((c / max) * 100);
+          return `<div class="slot"><div class="slot-time">${h}:00</div><div class="slot-track"><div class="slot-fill" style="width:${w}%"></div></div><div class="slot-label">${slotLabel(c,max)}</div><div class="slot-count">${c}</div></div>`;
+        }).join('');
+
+        const sorted = hours.map(h => [h, Number(hm[h]||0)]).sort((a,b)=>b[1]-a[1]||a[0].localeCompare(b[0]));
+        const peak = sorted[0];
+        const second = sorted.find(x => x[1] < peak[1] && x[1] > 0);
+        document.getElementById('peakNote').textContent = second
+          ? `尖峰時段：${peak[0]}:00（${peak[1]} 人）｜次高：${second[0]}:00（${second[1]} 人）`
+          : `尖峰時段：${peak[0]}:00（${peak[1]} 人）`;
+      } catch (e) {
+        document.getElementById('metaLine').textContent = '資料載入失敗，請稍後重整';
       }
     })();
   </script>

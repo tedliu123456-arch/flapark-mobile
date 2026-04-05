@@ -1,0 +1,11 @@
+{
+  "name": "flapark-mobile",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "sync:data": "node scripts/sync-flap-data.mjs"
+  },
+  "dependencies": {
+    "playwright": "^1.53.2"
+  }
+}
