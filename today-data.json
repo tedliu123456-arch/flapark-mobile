@@ -1,11 +1,11 @@
 {
   "date": "2026-04-05",
-  "visitCount": 22,
-  "mainGuardians": 22,
+  "visitCount": 29,
+  "mainGuardians": 29,
   "secondaryGuardians": 7,
-  "children": 34,
-  "totalPeople": 63,
+  "children": 45,
+  "totalPeople": 81,
   "countingMode": "全家長制（每筆家長欄位依分隔符拆分後逐一計數）",
-  "updatedAt": "2026-04-05 14:27 GMT+8",
+  "updatedAt": "2026-04-05 15:59 GMT+8",
   "source": "flapark.com/admin/visits"
 }
