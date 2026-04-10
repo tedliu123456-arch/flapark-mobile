@@ -7,7 +7,7 @@
   "children": 5,
   "totalPeople": 7,
   "countingMode": "全家長制（每筆家長欄位依分隔符拆分後逐一計數）",
-  "updatedAt": "2026-04-10 16:08 GMT+8",
+  "updatedAt": "2026-04-10 17:45 GMT+8",
   "source": "flapark.com/admin/visits",
   "ageBuckets": {
     "0-2": 0,
