@@ -1,139 +1,97 @@
-<!doctype html>
-<html lang="zh-Hant">
+<!DOCTYPE html>
+<html lang="zh-TW">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>FLAP 今日資料分析</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FLAP 今日入園 - 2026-06-04</title>
   <style>
-    body{font-family:"Noto Sans TC",-apple-system,sans-serif;background:#fff7fb;color:#2f2a2f;margin:0;line-height:1.45;-webkit-font-smoothing:antialiased}
-    .wrap{max-width:760px;margin:0 auto;padding:14px}
-    .card{background:#fff;border:1px solid #f1d9e9;border-radius:14px;padding:14px;margin:10px 0}
-    h1{margin:0 0 6px;font-size:22px}
-    h2{margin:0 0 10px;font-size:17px}
-    .muted{color:#7b7280;font-size:13px}
-    .kpi{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-    .k{background:#fdf2f8;border-radius:10px;padding:10px;min-height:86px;display:flex;flex-direction:column;justify-content:space-between}
-    .n{font-size:24px;font-weight:800;line-height:1;font-variant-numeric:tabular-nums}
-    ul{margin:0;padding-left:18px}
-    li{margin:4px 0;font-size:14px}
-    .slot-list{display:grid;gap:8px}
-    .slot{display:grid;grid-template-columns:56px 1fr 54px 34px;gap:8px;align-items:center}
-    .slot-time{font-size:13px;color:#4b4450;font-weight:700;text-align:right;font-variant-numeric:tabular-nums}
-    .slot-track{height:12px;background:#f3e8f0;border-radius:999px;overflow:hidden}
-    .slot-fill{height:100%;background:linear-gradient(90deg,#a78bfa,#f472b6);border-radius:999px}
-    .slot-label{font-size:12px;color:#8a8290;line-height:1.2;text-align:right}
-    .slot-count{font-size:12px;color:#6b6370;text-align:right;font-weight:700;font-variant-numeric:tabular-nums}
-    .peak-note{background:#fff4fb;border:1px dashed #f2b4dc;padding:8px;border-radius:10px;font-size:12px;color:#8b3d74;margin-top:10px}
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; padding: 20px; }
+    .container { max-width: 600px; margin: 0 auto; }
+    h1 { color: white; text-align: center; margin-bottom: 20px; font-size: 28px; }
+    .stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-bottom: 25px; }
+    .stat-card { background: white; border-radius: 16px; padding: 20px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+    .stat-value { font-size: 36px; font-weight: bold; color: #667eea; }
+    .stat-label { color: #666; font-size: 14px; margin-top: 5px; }
+    .chart { background: white; border-radius: 16px; padding: 20px; margin-bottom: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+    .chart h2 { color: #333; margin-bottom: 15px; font-size: 18px; }
+    .bar-container { margin-bottom: 12px; }
+    .bar-label { color: #666; font-size: 14px; margin-bottom: 5px; }
+    .bar { height: 24px; background: #eee; border-radius: 12px; overflow: hidden; }
+    .bar-fill { height: 100%; background: linear-gradient(90deg, #667eea, #764ba2); border-radius: 12px; display: flex; align-items: center; justify-content: flex-end; padding-right: 10px; color: white; font-size: 12px; font-weight: bold; }
+    .entries { background: white; border-radius: 16px; padding: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+    .entries h2 { color: #333; margin-bottom: 15px; font-size: 18px; }
+    .entry-item { padding: 12px 0; border-bottom: 1px solid #eee; }
+    .entry-item:last-child { border-bottom: none; }
+    .entry-parent { font-weight: bold; color: #333; }
+    .entry-kids { color: #666; font-size: 14px; margin-top: 4px; }
+    .entry-time { color: #999; font-size: 12px; margin-top: 4px; }
+    .status { display: inline-block; padding: 4px 10px; border-radius: 12px; font-size: 12px; margin-left: 10px; }
+    .status-active { background: #4ade80; color: white; }
+    .status-done { background: #ccc; color: white; }
+    .empty { text-align: center; color: white; padding: 40px; }
   </style>
 </head>
 <body>
-  <div class="wrap">
-    <div class="card">
-      <h1>FLAP 今日資料分析</h1>
-      <div class="muted" id="metaLine">日期：--（更新時間：--）</div>
-    </div>
-
-    <div class="card">
-      <h2>核心指標</h2>
-      <div class="kpi">
-        <div class="k">入場筆數<div class="n" id="visitCount">--</div></div>
-        <div class="k">來店總人數<div class="n" id="totalPeople">--</div></div>
-        <div class="k">孩童總數<div class="n" id="childrenCount">--</div></div>
+  <div class="container">
+    <h1>📊 FLAP 今日入園</h1>
+    <h2 style="text-align:center;color:white;margin-bottom:20px;font-size:20px;">2026-06-04</h2>
+    
+    <div class="stats">
+      <div class="stat-card">
+        <div class="stat-value">1</div>
+        <div class="stat-label">入園筆數</div>
       </div>
-      <div class="muted" style="margin-top:8px" id="totalPeopleNote">※ 全家長制：來店總人數由後台資料自動更新</div>
-      <div class="muted" style="margin-top:6px" id="guardianBreakdown">家長分開統計：主要家長 --｜次要家長 --</div>
+      <div class="stat-card">
+        <div class="stat-value">1</div>
+        <div class="stat-label">大人數量</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">1</div>
+        <div class="stat-label">孩童總數</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">0</div>
+        <div class="stat-label">已離場</div>
+      </div>
     </div>
 
-    <div class="card">
-      <h2>年齡分布</h2>
-      <ul>
-        <li>0-2 歲：<span id="age0_2">--</span></li>
-        <li>3-5 歲：<span id="age3_5">--</span></li>
-        <li>6-8 歲：<span id="age6_8">--</span></li>
-        <li>9 歲以上：<span id="age9p">--</span></li>
-      </ul>
+    <div class="chart">
+      <h2>👶 年齡分布</h2>
+      <div class="bar-container">
+        <div class="bar-label">0-2 歲</div>
+        <div class="bar"><div class="bar-fill" style="width:0%">0</div></div>
+      </div>
+      <div class="bar-container">
+        <div class="bar-label">3-5 歲</div>
+        <div class="bar"><div class="bar-fill" style="width:100%">1</div></div>
+      </div>
+      <div class="bar-container">
+        <div class="bar-label">6-8 歲</div>
+        <div class="bar"><div class="bar-fill" style="width:0%">0</div></div>
+      </div>
+      <div class="bar-container">
+        <div class="bar-label">9+ 歲</div>
+        <div class="bar"><div class="bar-fill" style="width:0%">0</div></div>
+      </div>
     </div>
 
-    <div class="card">
-      <h2>新舊客比例</h2>
-      <ul>
-        <li id="newLine">新客：--</li>
-        <li id="oldLine">舊客：--</li>
-      </ul>
+    <div class="chart">
+      <h2>🕐 入園時段分布</h2>
+      <div class="bar-container">
+        <div class="bar-label">12:00 - 13:00</div>
+        <div class="bar"><div class="bar-fill" style="width:100%">1</div></div>
+      </div>
     </div>
 
-    <div class="card">
-      <h2>預估營業額</h2>
-      <ul>
-        <li id="childRevenueLine">兒童票：300 元／人（-- 人）</li>
-        <li id="guardianRevenueLine">家長票：200 元／人（全家長 -- 人）</li>
-        <li><b id="revenueLine">預估營業額：-- 元</b></li>
-      </ul>
-      <div class="muted">公式：兒童人數 × 300 + 全家長人數 × 200</div>
-    </div>
-
-    <div class="card">
-      <h2>入場時段</h2>
-      <div class="slot-list" id="slotList"></div>
-      <div class="peak-note" id="peakNote">尖峰時段：--</div>
+    <div class="entries">
+      <h2>📋 今日入園記錄</h2>
+      <div class="entry-item">
+        <div class="entry-parent">余昱欣 <span class="status status-active">進行中</span></div>
+        <div class="entry-kids">孩童：李宸廷（5歲）</div>
+        <div class="entry-time">12:39 入場 • 0910398682</div>
+      </div>
     </div>
   </div>
-
-  <script>
-    function fmt(n){ return Number(n||0).toLocaleString('zh-TW'); }
-    function slotLabel(c, max){
-      if(c===0) return '無入場';
-      if(c===max) return '尖峰時段';
-      if(c>=max*0.7) return '熱門';
-      if(c>=max*0.3) return '一般';
-      return '離峰';
-    }
-    (async function(){
-      try{
-        const res = await fetch('./today-data.json?t=' + Date.now(), {cache:'no-store'});
-        if(!res.ok) throw new Error('load fail');
-        const d = await res.json();
-
-        document.getElementById('metaLine').textContent = `日期：${d.date || '--'}（更新時間：${d.updatedAt || '--'}）`;
-        document.getElementById('visitCount').textContent = fmt(d.visitCount);
-        document.getElementById('totalPeople').textContent = fmt(d.totalPeople);
-        document.getElementById('childrenCount').textContent = fmt(d.children);
-        document.getElementById('guardianBreakdown').textContent = `家長分開統計：主要家長 ${fmt(d.mainGuardians)}｜次要家長 ${fmt(d.secondaryGuardians)}`;
-        document.getElementById('totalPeopleNote').textContent = `※ 全家長制：${d.countingMode || '後台資料自動更新'}`;
-
-        const ab = d.ageBuckets || {};
-        document.getElementById('age0_2').textContent = fmt(ab['0-2']);
-        document.getElementById('age3_5').textContent = fmt(ab['3-5']);
-        document.getElementById('age6_8').textContent = fmt(ab['6-8']);
-        document.getElementById('age9p').textContent = fmt(ab['9+']);
-
-        document.getElementById('newLine').textContent = `新客：${fmt(d.newCnt)}（${d.newPct ?? 0}%）`;
-        document.getElementById('oldLine').textContent = `舊客：${fmt(d.oldCnt)}（${d.oldPct ?? 0}%）`;
-
-        document.getElementById('childRevenueLine').textContent = `兒童票：300 元／人（${fmt(d.children)} 人）`;
-        document.getElementById('guardianRevenueLine').textContent = `家長票：200 元／人（全家長 ${fmt(d.guardiansTotal)} 人）`;
-        document.getElementById('revenueLine').textContent = `預估營業額：${fmt(d.revenue)} 元`;
-
-        const hm = d.hourMap || {};
-        const hours = ['10','11','12','13','14','15','16','17','18'];
-        const max = Math.max(1, ...hours.map(h => Number(hm[h]||0)));
-        const list = document.getElementById('slotList');
-        list.innerHTML = hours.map(h => {
-          const c = Number(hm[h] || 0);
-          const w = Math.round((c / max) * 100);
-          return `<div class="slot"><div class="slot-time">${h}:00</div><div class="slot-track"><div class="slot-fill" style="width:${w}%"></div></div><div class="slot-label">${slotLabel(c,max)}</div><div class="slot-count">${c}</div></div>`;
-        }).join('');
-
-        const sorted = hours.map(h => [h, Number(hm[h]||0)]).sort((a,b)=>b[1]-a[1]||a[0].localeCompare(b[0]));
-        const peak = sorted[0];
-        const second = sorted.find(x => x[1] < peak[1] && x[1] > 0);
-        document.getElementById('peakNote').textContent = second
-          ? `尖峰時段：${peak[0]}:00（${peak[1]} 人）｜次高：${second[0]}:00（${second[1]} 人）`
-          : `尖峰時段：${peak[0]}:00（${peak[1]} 人）`;
-      } catch (e) {
-        document.getElementById('metaLine').textContent = '資料載入失敗，請稍後重整';
-      }
-    })();
-  </script>
 </body>
 </html>
