@@ -1,55 +1,49 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-TW">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FLAP 今日入園 - 2026-06-04</title>
-<style>
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;margin:0;padding:20px;background:#f5f5f5}
-.card{background:white;border-radius:12px;padding:20px;margin-bottom:16px;box-shadow:0 2px 8px rgba(0,0,0,.08)}
-h1{font-size:24px;margin:0 0 16px;color:#333}
-.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
-.stat{text-align:center;paddinG:16px;background:#f8f9fa;border-radius:8px}
-.stat-num{font-size:28px;font-weight:700;color:#2196F3}
-.stat-label{font-size:13px;color:#666}
-.badge{display:inline-block;padding:4px 12px;border-radius:20px;font-size:13px;background:#e3f2fd;color:#1976D2}
-.age-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;text-align:center}
-.age-item{padding:12px;background:#f8f9fa;border-radius:8px}
-.age-num{font-size:20px;font-weight:600;color:#333}
-.age-label{font-size:12px;color:#666}
-.hour-bar{display:flex;align-items:center;gap:8px;margin:6px 0}
-.hour-label{width:50px;font-size:13px;color:#666}
-.bar-wrap{flex:1;height:24px;background:#eee;border-radius:4px;overflow:hidden}
-.bar-fill{height:100%;background:#4CAF50;border-radius:4px}
-.hour-num{width:30px;text-align:right;font-size:13px;font-weight:500}
-.record{padding:12px;border-bottom:1px solid #eee}
-.record:last-child{border:0}
-.record-name{font-weight:600;color:#333}
-.child{font-size:13px;color:#666}
-.time{font-size:12px;color:#999}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FLAPARK 今日分析</title>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; padding: 20px; max-width: 600px; margin: 0 auto; background: #f5f5f5; }
+    h1 { color: #2c3e50; text-align: center; }
+    .card { background: white; border-radius: 12px; padding: 20px; margin-bottom: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+    .stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+    .stat { text-align: center; padding: 16px; background: #f8f9fa; border-radius: 8px; }
+    .stat-value { font-size: 28px; font-weight: bold; color: #3498db; }
+    .stat-label { font-size: 14px; color: #666; margin-top: 4px; }
+    .timestamp { text-align: center; color: #999; font-size: 12px; margin-top: 20px; }
+  </style>
 </head>
 <body>
-<h1>📊 2026-06-04</h1>
-<div class="grid">
-<div class="stat"><div class="stat-num">2</div><div class="stat-label">入園筆數</div></div>
-<div class="stat"><div class="stat-num">2</div><div class="stat-label">大人數量</div></div>
-<div class="stat"><div class="stat-num">2</div><div class="stat-label">孩童總數</div></div>
-<div class="stat"><div class="stat-num">2</div><div class="stat-label">目前在園</div></div>
-</div>
-<div class="card"><h2>👶 年齡分布</h2>
-<div class="age-grid">
-<div class="age-item"><div class="age-num">0</div><div class="age-label">0-2 歲</div></div>
-<div class="age-item"><div class="age-num">1</div><div class="age-label">3-5 歲</div></div>
-<div class="age-item"><div class="age-num">1</div><div class="age-label">6-8 歲</div></div>
-<div class="age-item"><div class="age-num">0</div><div class="age-label">9+ 歲</div></div>
-</div></div>
-<div class="card"><h2>🕐 入園時段分布</h2>
-<div class="hour-bar"><span class="hour-label">12:00</span><div class="bar-wrap"><div class="bar-fill" style="width:30%"></div></div><span class="hour-num">1</span></div><div class="hour-bar"><span class="hour-label">14:00</span><div class="bar-wrap"><div class="bar-fill" style="width:30%"></div></div><span class="hour-num">1</span></div>
-</div>
-<div class="card"><h2>📋 今日入園記錄</h2>
-<div class="record"><div class="record-name">余昱欣</div><span class="badge">進行中</span><div class="child">孩童：李宸廷（5歲）</div><div class="time">12:39 入境 · 0910398682</div></div>
-<div class="record"><div class="record-name">黃崇政</div><span class="badge">進行中</span><div class="child">孩童：黃舒筠（7歲）</div><div class="time">14:26 入境 · 0982295890</div></div>
-</div>
+  <h1>📊 FLAPARK 今日分析</h1>
+  
+  <div class="card">
+    <div class="stats">
+      <div class="stat">
+        <div class="stat-value">2</div>
+        <div class="stat-label">入園筆數</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">2</div>
+        <div class="stat-label">大人人次</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">2</div>
+        <div class="stat-label">孩童總數</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">2</div>
+        <div class="stat-label">目前在園</div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="card">
+    <h3>📅 日期：2026-06-04</h3>
+    <p><strong>目前園區狀態：</strong>進行中</p>
+  </div>
+  
+  <div class="timestamp">最後更新：2026-06-04 16:29</div>
 </body>
 </html>
