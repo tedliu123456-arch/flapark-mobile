@@ -1,97 +1,55 @@
 <!DOCTYPE html>
-<html lang="zh-TW">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FLAP 今日入園 - 2026-06-04</title>
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; padding: 20px; }
-    .container { max-width: 600px; margin: 0 auto; }
-    h1 { color: white; text-align: center; margin-bottom: 20px; font-size: 28px; }
-    .stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-bottom: 25px; }
-    .stat-card { background: white; border-radius: 16px; padding: 20px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-    .stat-value { font-size: 36px; font-weight: bold; color: #667eea; }
-    .stat-label { color: #666; font-size: 14px; margin-top: 5px; }
-    .chart { background: white; border-radius: 16px; padding: 20px; margin-bottom: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-    .chart h2 { color: #333; margin-bottom: 15px; font-size: 18px; }
-    .bar-container { margin-bottom: 12px; }
-    .bar-label { color: #666; font-size: 14px; margin-bottom: 5px; }
-    .bar { height: 24px; background: #eee; border-radius: 12px; overflow: hidden; }
-    .bar-fill { height: 100%; background: linear-gradient(90deg, #667eea, #764ba2); border-radius: 12px; display: flex; align-items: center; justify-content: flex-end; padding-right: 10px; color: white; font-size: 12px; font-weight: bold; }
-    .entries { background: white; border-radius: 16px; padding: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-    .entries h2 { color: #333; margin-bottom: 15px; font-size: 18px; }
-    .entry-item { padding: 12px 0; border-bottom: 1px solid #eee; }
-    .entry-item:last-child { border-bottom: none; }
-    .entry-parent { font-weight: bold; color: #333; }
-    .entry-kids { color: #666; font-size: 14px; margin-top: 4px; }
-    .entry-time { color: #999; font-size: 12px; margin-top: 4px; }
-    .status { display: inline-block; padding: 4px 10px; border-radius: 12px; font-size: 12px; margin-left: 10px; }
-    .status-active { background: #4ade80; color: white; }
-    .status-done { background: #ccc; color: white; }
-    .empty { text-align: center; color: white; padding: 40px; }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FLAP 今日入園 - 2026-06-04</title>
+<style>
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;margin:0;padding:20px;background:#f5f5f5}
+.card{background:white;border-radius:12px;padding:20px;margin-bottom:16px;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+h1{font-size:24px;margin:0 0 16px;color:#333}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.stat{text-align:center;paddinG:16px;background:#f8f9fa;border-radius:8px}
+.stat-num{font-size:28px;font-weight:700;color:#2196F3}
+.stat-label{font-size:13px;color:#666}
+.badge{display:inline-block;padding:4px 12px;border-radius:20px;font-size:13px;background:#e3f2fd;color:#1976D2}
+.age-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;text-align:center}
+.age-item{padding:12px;background:#f8f9fa;border-radius:8px}
+.age-num{font-size:20px;font-weight:600;color:#333}
+.age-label{font-size:12px;color:#666}
+.hour-bar{display:flex;align-items:center;gap:8px;margin:6px 0}
+.hour-label{width:50px;font-size:13px;color:#666}
+.bar-wrap{flex:1;height:24px;background:#eee;border-radius:4px;overflow:hidden}
+.bar-fill{height:100%;background:#4CAF50;border-radius:4px}
+.hour-num{width:30px;text-align:right;font-size:13px;font-weight:500}
+.record{padding:12px;border-bottom:1px solid #eee}
+.record:last-child{border:0}
+.record-name{font-weight:600;color:#333}
+.child{font-size:13px;color:#666}
+.time{font-size:12px;color:#999}
+</style>
 </head>
 <body>
-  <div class="container">
-    <h1>📊 FLAP 今日入園</h1>
-    <h2 style="text-align:center;color:white;margin-bottom:20px;font-size:20px;">2026-06-04</h2>
-    
-    <div class="stats">
-      <div class="stat-card">
-        <div class="stat-value">1</div>
-        <div class="stat-label">入園筆數</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-value">1</div>
-        <div class="stat-label">大人數量</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-value">1</div>
-        <div class="stat-label">孩童總數</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-value">0</div>
-        <div class="stat-label">已離場</div>
-      </div>
-    </div>
-
-    <div class="chart">
-      <h2>👶 年齡分布</h2>
-      <div class="bar-container">
-        <div class="bar-label">0-2 歲</div>
-        <div class="bar"><div class="bar-fill" style="width:0%">0</div></div>
-      </div>
-      <div class="bar-container">
-        <div class="bar-label">3-5 歲</div>
-        <div class="bar"><div class="bar-fill" style="width:100%">1</div></div>
-      </div>
-      <div class="bar-container">
-        <div class="bar-label">6-8 歲</div>
-        <div class="bar"><div class="bar-fill" style="width:0%">0</div></div>
-      </div>
-      <div class="bar-container">
-        <div class="bar-label">9+ 歲</div>
-        <div class="bar"><div class="bar-fill" style="width:0%">0</div></div>
-      </div>
-    </div>
-
-    <div class="chart">
-      <h2>🕐 入園時段分布</h2>
-      <div class="bar-container">
-        <div class="bar-label">12:00 - 13:00</div>
-        <div class="bar"><div class="bar-fill" style="width:100%">1</div></div>
-      </div>
-    </div>
-
-    <div class="entries">
-      <h2>📋 今日入園記錄</h2>
-      <div class="entry-item">
-        <div class="entry-parent">余昱欣 <span class="status status-active">進行中</span></div>
-        <div class="entry-kids">孩童：李宸廷（5歲）</div>
-        <div class="entry-time">12:39 入場 • 0910398682</div>
-      </div>
-    </div>
-  </div>
+<h1>📊 2026-06-04</h1>
+<div class="grid">
+<div class="stat"><div class="stat-num">2</div><div class="stat-label">入園筆數</div></div>
+<div class="stat"><div class="stat-num">2</div><div class="stat-label">大人數量</div></div>
+<div class="stat"><div class="stat-num">2</div><div class="stat-label">孩童總數</div></div>
+<div class="stat"><div class="stat-num">2</div><div class="stat-label">目前在園</div></div>
+</div>
+<div class="card"><h2>👶 年齡分布</h2>
+<div class="age-grid">
+<div class="age-item"><div class="age-num">0</div><div class="age-label">0-2 歲</div></div>
+<div class="age-item"><div class="age-num">1</div><div class="age-label">3-5 歲</div></div>
+<div class="age-item"><div class="age-num">1</div><div class="age-label">6-8 歲</div></div>
+<div class="age-item"><div class="age-num">0</div><div class="age-label">9+ 歲</div></div>
+</div></div>
+<div class="card"><h2>🕐 入園時段分布</h2>
+<div class="hour-bar"><span class="hour-label">12:00</span><div class="bar-wrap"><div class="bar-fill" style="width:30%"></div></div><span class="hour-num">1</span></div><div class="hour-bar"><span class="hour-label">14:00</span><div class="bar-wrap"><div class="bar-fill" style="width:30%"></div></div><span class="hour-num">1</span></div>
+</div>
+<div class="card"><h2>📋 今日入園記錄</h2>
+<div class="record"><div class="record-name">余昱欣</div><span class="badge">進行中</span><div class="child">孩童：李宸廷（5歲）</div><div class="time">12:39 入境 · 0910398682</div></div>
+<div class="record"><div class="record-name">黃崇政</div><span class="badge">進行中</span><div class="child">孩童：黃舒筠（7歲）</div><div class="time">14:26 入境 · 0982295890</div></div>
+</div>
 </body>
 </html>
