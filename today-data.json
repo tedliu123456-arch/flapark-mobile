@@ -1,34 +1,25 @@
 {
-  "date": "2026-06-14",
-  "visitCount": 43,
-  "mainGuardians": 43,
-  "secondaryGuardians": 14,
-  "guardiansTotal": 57,
-  "children": 78,
-  "totalPeople": 135,
-  "countingMode": "全家長制（每筆家長欄位依分隔符拆分後逐一計數）",
-  "updatedAt": "2026-06-14 18:03 GMT+8",
-  "source": "flapark.com/admin/visits",
-  "ageBuckets": {
-    "0-2": 7,
-    "3-5": 23,
-    "6-8": 27,
-    "9+": 21
-  },
-  "newCnt": 43,
-  "oldCnt": 0,
-  "newPct": 100,
-  "oldPct": 0,
-  "hourMap": {
-    "10": 7,
-    "11": 1,
-    "12": 3,
-    "13": 4,
-    "14": 6,
-    "15": 10,
-    "16": 5,
-    "17": 5,
-    "18": 0
-  },
-  "revenue": 34800
+  "date": "2026-06-15",
+  "updateTime": "14:50",
+  "totalVisits": 2,
+  "adultCount": 2,
+  "childCount": 4,
+  "visits": [
+    {
+      "id": 1428,
+      "parentName": "郭韋伶",
+      "children": ["李想", "李樂"],
+      "phone": "0963377897",
+      "checkinTime": "13:52",
+      "status": "進行中"
+    },
+    {
+      "id": 1429,
+      "parentName": "Yurie",
+      "children": ["瑞紗", "陸羽"],
+      "phone": "0965235510",
+      "checkinTime": "14:23",
+      "status": "進行中"
+    }
+  ]
 }
