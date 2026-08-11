@@ -1,5 +1,5 @@
 {
-  "date": "2026-08-10",
+  "date": "2026-08-11",
   "visitCount": 0,
   "mainGuardians": 0,
   "secondaryGuardians": 0,
@@ -7,7 +7,7 @@
   "children": 0,
   "totalPeople": 0,
   "countingMode": "全家長制（每筆家長欄位依分隔符拆分後逐一計數）",
-  "updatedAt": "2026-08-10 18:10 GMT+8",
+  "updatedAt": "2026-08-11 11:28 GMT+8",
   "source": "flapark.com/admin/visits",
   "ageBuckets": {
     "0-2": 0,
