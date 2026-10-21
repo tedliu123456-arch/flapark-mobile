@@ -26,7 +26,12 @@ const fmtDate = (d) => `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'
 const dateStr = fmtDate(twNow);
 const updatedAt = `${dateStr} ${String(twNow.getHours()).padStart(2,'0')}:${String(twNow.getMinutes()).padStart(2,'0')} GMT+8`;
 
-const splitNames = (s='') => String(s).split(/[、，,;；]\s*/).map(x => x.trim()).filter(Boolean);
+const splitNames = (s='') => {
+  const raw = String(s || '').trim();
+  // 後台無資料時會顯示 '-' / '—' / '無' 等佔位字樣，需視為空值
+  if (!raw || /^[-—–_\s]*$/.test(raw) || raw === '無' || raw === '无' || raw === 'N/A' || raw === 'null') return [];
+  return raw.split(/[、，,;；]\s*/).map(x => x.trim()).filter(Boolean);
+};
 const decodeHtml = (s='') => s
   .replaceAll('&quot;', '"')
   .replaceAll('&#039;', "'")
@@ -60,21 +65,44 @@ if (await page.locator('input[type="password"]').count()) {
   if (isVisible) throw new Error('Auth required at visits page');
 }
 
+// 欄位位置以表頭為準（後台版面調整過：家長姓名 / 大朋友 / 小朋友 / 電話 / 入場時間），
+// 避免用固定索引抓錯欄位，導致整份資料都算成 0
+const headerMap = await page.$$eval('thead th', ths => {
+  const m = {};
+  ths.forEach((th, i) => { const k = (th.textContent || '').trim().replace(/\s+/g, ''); if (k) m[k] = i; });
+  return m;
+});
+const hasHeader = headerMap['入場時間'] !== undefined;
+const idxOf = (names, fallback) => {
+  for (const n of names) { if (headerMap[n] !== undefined) return headerMap[n]; }
+  return fallback;
+};
+const I_PARENT  = hasHeader ? idxOf(['家長姓名'], 2) : 2;
+const I_OLDER   = hasHeader ? idxOf(['大朋友'], 3) : -1;
+const I_CHILD   = hasHeader ? idxOf(['小朋友'], 4) : 3;
+const I_PHONE   = hasHeader ? idxOf(['電話'], 5) : 4;
+const I_CHECKIN = hasHeader ? idxOf(['入場時間'], 6) : 5;
+console.log('Column map:', JSON.stringify({ hasHeader, I_PARENT, I_OLDER, I_CHILD, I_PHONE, I_CHECKIN }));
+
 const visits = [];
 const allRows = [];
 for (let p = 1; p <= 160; p++) {
   const url = p === 1 ? VISITS_URL : `${VISITS_URL}?page=${p}`;
   await page.goto(url, { waitUntil: 'domcontentloaded' });
-  const rows = await page.$$eval('tbody tr', trs => trs.map(tr => {
+  const rows = await page.$$eval('tbody tr', (trs, map) => trs.map(tr => {
     const tds = tr.querySelectorAll('td');
-    if (tds.length < 6) return null;
-    const parent = (tds[2]?.textContent || '').trim();
-    const child = (tds[3]?.textContent || '').trim();
-    const phone = (tds[4]?.textContent || '').trim();
-    const checkin = (tds[5]?.textContent || '').trim();
+    if (tds.length <= map.I_CHECKIN) return null;
+    const pick = (i) => (i >= 0 ? (tds[i]?.textContent || '').trim() : '');
     const edit = tr.querySelector('a[href*="/admin/visits/"][href$="/edit"]')?.href || null;
-    return { parent, child, phone, checkin, edit };
-  }).filter(Boolean));
+    return {
+      parent: pick(map.I_PARENT),
+      older: pick(map.I_OLDER),
+      child: pick(map.I_CHILD),
+      phone: pick(map.I_PHONE),
+      checkin: pick(map.I_CHECKIN),
+      edit,
+    };
+  }).filter(Boolean), { I_PARENT, I_OLDER, I_CHILD, I_PHONE, I_CHECKIN });
 
   if (!rows.length) break;
 
@@ -96,7 +124,7 @@ let childrenTotal = 0;
 const hourMap = {};
 for (const v of visits) {
   const gs = splitNames(v.parent);
-  const cs = splitNames(v.child);
+  const cs = [...splitNames(v.older), ...splitNames(v.child)];
   if (gs.length > 0) mainGuardians += 1;
   guardiansTotal += gs.length;
   childrenTotal += cs.length;
