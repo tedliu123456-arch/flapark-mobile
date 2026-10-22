@@ -118,11 +118,6 @@ for (let p = 1; p <= 160; p++) {
   if (foundToday === 0 && visits.length > 0) break;
 }
 
-// DEBUG_TEMP: 印出最近 5 筆 checkin 原始值，確認日期格式
-if (process.env.DEBUG_CHECKIN) {
-  console.log('DEBUG checkin samples:', JSON.stringify(allRows.slice(0, 5).map(r => r.checkin)));
-}
-
 let guardiansTotal = 0;
 let mainGuardians = 0;
 let childrenTotal = 0;
