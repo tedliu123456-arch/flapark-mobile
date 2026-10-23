@@ -86,6 +86,8 @@ console.log('Column map:', JSON.stringify({ hasHeader, I_PARENT, I_OLDER, I_CHIL
 
 const visits = [];
 const allRows = [];
+// TEMP DEBUG 2026-10-23
+const __dbg = { pages: 0, rowCounts: [], raw: [] };
 for (let p = 1; p <= 160; p++) {
   const url = p === 1 ? VISITS_URL : `${VISITS_URL}?page=${p}`;
   await page.goto(url, { waitUntil: 'domcontentloaded' });
@@ -106,6 +108,10 @@ for (let p = 1; p <= 160; p++) {
 
   if (!rows.length) break;
 
+  __dbg.pages += 1;
+  __dbg.rowCounts.push(rows.length);
+  if (__dbg.raw.length < 12) for (const r of rows) __dbg.raw.push(r.checkin);
+
   let foundToday = 0;
   for (const r of rows) {
     allRows.push(r);
@@ -117,6 +123,8 @@ for (let p = 1; p <= 160; p++) {
 
   if (foundToday === 0 && visits.length > 0) break;
 }
+
+console.log('DEBUG_DUMP ' + JSON.stringify(__dbg));
 
 let guardiansTotal = 0;
 let mainGuardians = 0;
