@@ -86,6 +86,11 @@ console.log('Column map:', JSON.stringify({ hasHeader, I_PARENT, I_OLDER, I_CHIL
 
 const visits = [];
 const allRows = [];
+// 歷史深度：要抓多少筆「今天以前」的資料來判斷新舊客。
+// 舊版在遇到「沒有今天資料的分頁」就 break，導致歷史只掃到 1 頁（約 10 筆），
+// 新舊客比對形同虛設（永遠 100% 新客）。改成持續往回掃到足夠的歷史筆數為止。
+const HISTORY_TARGET = 400;
+let historyCount = 0;
 for (let p = 1; p <= 160; p++) {
   const url = p === 1 ? VISITS_URL : `${VISITS_URL}?page=${p}`;
   await page.goto(url, { waitUntil: 'domcontentloaded' });
@@ -112,10 +117,13 @@ for (let p = 1; p <= 160; p++) {
     if (r.checkin.startsWith(dateStr) && r.edit) {
       visits.push(r);
       foundToday++;
+    } else if ((r.checkin || '').slice(0, 10) < dateStr) {
+      historyCount++;
     }
   }
 
-  if (foundToday === 0 && visits.length > 0) break;
+  // 今天資料已收完，且歷史已掃夠 → 停止
+  if (foundToday === 0 && visits.length > 0 && historyCount >= HISTORY_TARGET) break;
 }
 
 let guardiansTotal = 0;
@@ -132,12 +140,23 @@ for (const v of visits) {
   if (m) hourMap[m[1]] = (hourMap[m[1]] || 0) + 1;
 }
 
-const keyOf = (r) => `${(r.phone || '').replace(/\s+/g, '')}|${splitNames(r.parent)[0] || ''}`;
-const beforeSet = new Set(allRows.filter(r => (r.checkin || '').slice(0,10) < dateStr).map(keyOf));
+// 新舊客比對：以手機號碼為主、姓名為輔（HEARTBEAT.md 定義）
+// 只有電話時用電話；沒有電話才退回姓名，避免電話空值讓所有筆數都變成「不同人」
+const normPhone = (p) => (p || '').replace(/[^0-9]/g, '');
+const normName = (n) => (n || '').replace(/\s+/g, '').toLowerCase();
+const keyOf = (r) => {
+  const ph = normPhone(r.phone);
+  if (ph) return 'p:' + ph;
+  const nm = normName(splitNames(r.parent)[0] || '');
+  return nm ? 'n:' + nm : '';
+};
+const beforeSet = new Set(allRows.filter(r => (r.checkin || '').slice(0, 10) < dateStr).map(keyOf).filter(Boolean));
 let newCnt = 0, oldCnt = 0;
 for (const v of visits) {
-  if (beforeSet.has(keyOf(v))) oldCnt++; else newCnt++;
+  const k = keyOf(v);
+  if (k && beforeSet.has(k)) oldCnt++; else newCnt++;
 }
+console.log('Customer matching:', JSON.stringify({ historyRows: beforeSet.size, newCnt, oldCnt, visits: visits.length }));
 
 const ageList = [];
 const re = /\"birthday_year\":\"(\d{4})\",\"birthday_month\":\"(\d{1,2})\",\"birthday_day\":\"(\d{1,2})\"/g;
