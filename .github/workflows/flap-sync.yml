@@ -8,6 +8,11 @@ on:
 permissions:
   contents: write
 
+# 同一時間只允許一輪同步（schedule 與 workflow_dispatch 可能撞在一起）
+concurrency:
+  group: flap-sync
+  cancel-in-progress: false
+
 jobs:
   sync:
     runs-on: ubuntu-latest
@@ -41,5 +46,8 @@ jobs:
             echo "No changes"
           else
             git commit -m "chore(sync): auto update today-data.json"
+            # 併發保護：可能同時有 schedule 與 workflow_dispatch（launchd 補跑）在跑，
+            # push 前先 rebase 遠端最新狀態，避免 non-fast-forward 被拒導致整輪失敗
+            git pull --rebase --autostash origin main
             git push
           fi
