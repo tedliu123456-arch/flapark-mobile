@@ -1,21 +1,21 @@
 {
   "date": "2026-10-24",
-  "visitCount": 17,
-  "mainGuardians": 17,
+  "visitCount": 19,
+  "mainGuardians": 19,
   "secondaryGuardians": 11,
-  "guardiansTotal": 28,
-  "children": 25,
-  "totalPeople": 53,
+  "guardiansTotal": 30,
+  "children": 29,
+  "totalPeople": 59,
   "countingMode": "全家長制（每筆家長欄位依分隔符拆分後逐一計數）",
-  "updatedAt": "2026-10-24 14:01 GMT+8",
+  "updatedAt": "2026-10-24 14:31 GMT+8",
   "source": "flapark.com/admin/visits",
   "ageBuckets": {
-    "0-2": 4,
+    "0-2": 5,
     "3-5": 15,
-    "6-8": 3,
-    "9+": 2
+    "6-8": 4,
+    "9+": 4
   },
-  "newCnt": 17,
+  "newCnt": 19,
   "oldCnt": 0,
   "newPct": 100,
   "oldPct": 0,
@@ -24,11 +24,11 @@
     "11": 4,
     "12": 3,
     "13": 2,
-    "14": 1,
+    "14": 3,
     "15": 0,
     "16": 0,
     "17": 0,
     "18": 0
   },
-  "revenue": 13100
+  "revenue": 14700
 }
