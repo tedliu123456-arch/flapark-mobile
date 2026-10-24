@@ -15,8 +15,8 @@ if (!USER || !PASS) {
 const twNow = new Date(new Date().toLocaleString('en-US', { timeZone: 'Asia/Taipei' }));
 const hh = twNow.getHours();
 const mm = twNow.getMinutes();
-// 10:30 ~ 19:00 every 30 mins
-const inWindow = (hh > 10 || (hh === 10 && mm >= 30)) && (hh < 19 || (hh === 19 && mm === 0));
+// 10:30 ~ 19:30 every 30 mins (結束時間抓到 19:30，涵蓋 GitHub cron 排程延遲)
+const inWindow = (hh > 10 || (hh === 10 && mm >= 30)) && (hh < 19 || (hh === 19 && mm <= 30));
 if (!inWindow && process.env.FORCE_SYNC !== '1') {
   console.log('Outside sync window, skip.');
   process.exit(0);
@@ -86,8 +86,6 @@ console.log('Column map:', JSON.stringify({ hasHeader, I_PARENT, I_OLDER, I_CHIL
 
 const visits = [];
 const allRows = [];
-// TEMP DEBUG 2026-10-23
-const __dbg = { pages: 0, rowCounts: [], raw: [] };
 for (let p = 1; p <= 160; p++) {
   const url = p === 1 ? VISITS_URL : `${VISITS_URL}?page=${p}`;
   await page.goto(url, { waitUntil: 'domcontentloaded' });
@@ -108,10 +106,6 @@ for (let p = 1; p <= 160; p++) {
 
   if (!rows.length) break;
 
-  __dbg.pages += 1;
-  __dbg.rowCounts.push(rows.length);
-  if (__dbg.raw.length < 12) for (const r of rows) __dbg.raw.push(r.checkin);
-
   let foundToday = 0;
   for (const r of rows) {
     allRows.push(r);
@@ -123,8 +117,6 @@ for (let p = 1; p <= 160; p++) {
 
   if (foundToday === 0 && visits.length > 0) break;
 }
-
-console.log('DEBUG_DUMP ' + JSON.stringify(__dbg));
 
 let guardiansTotal = 0;
 let mainGuardians = 0;
@@ -178,7 +170,7 @@ const ageBuckets = {
 
 const revenue = childrenTotal * 300 + guardiansTotal * 200;
 
-if (false && inWindow && visits.length === 0) { // disabled: allow zero visits
+if (false && inWindow && visits.length === 0) { // 保留但停用：來源站可能真的當日 0 筆，勿讓排程失敗
   throw new Error('Sync safety stop: got 0 visits during business window');
 }
 

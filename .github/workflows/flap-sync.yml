@@ -30,7 +30,6 @@ jobs:
         env:
           FLAP_ADMIN_USER: ${{ secrets.FLAP_ADMIN_USER }}
           FLAP_ADMIN_PASS: ${{ secrets.FLAP_ADMIN_PASS }}
-          FORCE_SYNC: '1'
         run: npm run sync:data
 
       - name: Commit & push if changed
