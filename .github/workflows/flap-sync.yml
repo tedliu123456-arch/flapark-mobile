@@ -46,8 +46,24 @@ jobs:
             echo "No changes"
           else
             git commit -m "chore(sync): auto update today-data.json"
-            # 併發保護：可能同時有 schedule 與 workflow_dispatch（launchd 補跑）在跑，
-            # push 前先 rebase 遠端最新狀態，避免 non-fast-forward 被拒導致整輪失敗
-            git pull --rebase --autostash origin main
-            git push
+            # 併發保護：schedule 與 workflow_dispatch（launchd 補跑）可能同時跑到，
+            # 兩邊都改 today-data.json → rebase 會產生內容衝突而整輪失敗。
+            # 改成「以遠端最新為基底 + 保留本輪資料」重建 commit，並重試 push。
+            for i in 1 2 3; do
+              git fetch origin main
+              git reset --soft origin/main
+              # 若遠端已有更新的資料（另一輪剛 push），以 updatedAt 較新者為準
+              git show origin/main:today-data.json > /tmp/remote-today.json 2>/dev/null || true
+              python3 scripts/merge-today-data.py /tmp/remote-today.json
+              git add today-data.json
+              git commit -m "chore(sync): auto update today-data.json" || true
+              if git push origin HEAD:main; then
+                echo "Pushed on attempt $i"
+                exit 0
+              fi
+              echo "push attempt $i failed, retrying..."
+              sleep 10
+            done
+            echo "push failed after 3 attempts"
+            exit 1
           fi
