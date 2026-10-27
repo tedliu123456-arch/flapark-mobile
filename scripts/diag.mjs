@@ -1,0 +1,17 @@
+import { chromium } from 'playwright';
+const USER = process.env.FLAP_ADMIN_USER, PASS = process.env.FLAP_ADMIN_PASS;
+const b = await chromium.launch({headless:true});
+const p = await b.newPage();
+await p.goto('https://flapark.com/admin',{waitUntil:'domcontentloaded'});
+await p.locator('input[type="text"], input[type="email"]').first().fill(USER);
+await p.locator('input[type="password"]').first().fill(PASS);
+await p.locator('button[type="submit"], button:has-text("登入"), button:has-text("Log in")').first().click().catch(()=>p.keyboard.press('Enter'));
+await p.waitForTimeout(2500);
+await p.goto('https://flapark.com/admin/visits',{waitUntil:'domcontentloaded'});
+const headers = await p.$$eval('thead th', ths=>ths.map(t=>(t.textContent||'').trim()));
+console.log('HEADERS:', JSON.stringify(headers));
+const rows = await p.$$eval('tbody tr', trs=>trs.slice(0,8).map(tr=>Array.from(tr.querySelectorAll('td')).map(td=>(td.textContent||'').trim().slice(0,24))));
+console.log('ROWS:', JSON.stringify(rows,null,1));
+const total = await p.evaluate(()=>document.body.innerText.match(/共\s*\d+\s*[筆頁條]|1-\s*\d+\s*\/\s*\d+/)?.[0]||'n/a');
+console.log('PAGINATION:', total);
+await b.close();
