@@ -7,7 +7,7 @@
   "children": 65,
   "totalPeople": 114,
   "countingMode": "全家長制（每筆家長欄位依分隔符拆分後逐一計數）",
-  "updatedAt": "2026-11-08 18:14 GMT+8",
+  "updatedAt": "2026-11-08 18:43 GMT+8",
   "source": "flapark.com/admin/visits",
   "ageBuckets": {
     "0-2": 9,
@@ -15,10 +15,10 @@
     "6-8": 13,
     "9+": 21
   },
-  "newCnt": 31,
-  "oldCnt": 9,
-  "newPct": 77.5,
-  "oldPct": 22.5,
+  "newCnt": 30,
+  "oldCnt": 10,
+  "newPct": 75,
+  "oldPct": 25,
   "hourMap": {
     "10": 2,
     "11": 3,
@@ -26,9 +26,9 @@
     "13": 8,
     "14": 3,
     "15": 1,
-    "16": 7,
+    "16": 6,
     "17": 4,
-    "18": 1
+    "18": 2
   },
   "revenue": 29300
 }
