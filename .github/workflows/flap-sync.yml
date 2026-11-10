@@ -15,7 +15,8 @@ concurrency:
 
 jobs:
   sync:
-    runs-on: ubuntu-latest
+    # ubuntu-latest 已於 2026-10-19 遷移至 Ubuntu 26，Playwright 尚未支援 → 鎖定 24.04
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout
         uses: actions/checkout@v4
